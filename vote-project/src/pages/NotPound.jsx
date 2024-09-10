@@ -1,8 +1,8 @@
 const NotPound = () => {
   return (
-    <div>
+    <>
       NotPound
-    </div>
+    </>
   );
 };
 
