@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useVoteStore } from "../../store/voteStore";
 import { useEffect } from "react";
+import { getVotes } from "../../apis/post";
+import { useFetchVotes } from "../../queries/voteQuery";
 
 const VoteListForm = () => {
   const nav = useNavigate();
@@ -15,23 +17,11 @@ const VoteListForm = () => {
   const onClickBack = () => {
     nav(-1);
   };
-
-  useEffect(() => {
-    // 비동기 함수를 useEffect 내에서 정의
-    console.log(userInfo);
-    const fetchVotes = async () => {
-      try {
-        const res = await getVotes({
-          "gubun": "mcnc",
-          "userSeq": 0,
-          "startDate": "2024-01-01T00:00:00.000+00:00",
-          "endDate": "2024-12-31T23:59:59.999+00:00"
-        });
-        console.log('Votes fetched:', res); // 서버 응답 확인
-      } catch (error) {
-        console.error('Error fetching votes:', error); // 오류 처리
-      }
-    };
+  const { data, isLoading, isError, error } = useFetchVotes({
+    "gubun": "mcnc",
+    "userSeq": 0,
+    "startDate": "2024-01-01T00:00:00.000+00:00",
+    "endDate": "2024-12-31T23:59:59.999+00:00"
   });
 
   return (

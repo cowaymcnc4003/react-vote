@@ -1,7 +1,7 @@
 import { voteInstance } from "./index";
 
 function getVotes(voteData) {
-  return voteInstance.post('votes', voteData);
+  return voteInstance.post('vote', voteData);
 }
 
 

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import VoteHeader from "../components/common/VoteHeader";
 import VoteListForm from "../components/vote/VoteListForm";
+import { Suspense } from "react";
 
 const VoteMain = () => {
   const nav = useNavigate();
@@ -22,7 +23,9 @@ const VoteMain = () => {
           </button>
         }
       />
-      <VoteListForm />
+      <Suspense fallback={<div>Loading...</div>}>
+        <VoteListForm />
+      </Suspense>
     </>
   );
 };
