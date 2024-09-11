@@ -35,5 +35,11 @@ export default [
       ],
       "react/prop-types": "off"
     },
+    env: {
+      "node": true,
+      "commonjs": true,
+      "browser": true,
+      "es6": true
+    }
   },
 ]
