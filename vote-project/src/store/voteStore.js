@@ -11,3 +11,4 @@ export const useVoteStore = create(devtools(
   }),
   { name: "VoteStore" } // devtools의 이름 설정 (선택 사항)l
 ));
+

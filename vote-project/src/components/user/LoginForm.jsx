@@ -6,13 +6,12 @@ import { useVoteStore } from "../../store/voteStore";
 
 const LoginForm = () => {
 
-  const { setUserInfo, setToken } = useVoteStore();
+  const { setUserInfo, setToken, userInfo } = useVoteStore();
 
   useEffect(() => {
     // 상태를 설정하는 것이 올바르게 작동하는지 확인
 
   }, []); // 의존성 배열에 setUserInfo를 포함
-
 
   const inputId = useRef("");
   const inputPw = useRef("");
@@ -32,10 +31,8 @@ const LoginForm = () => {
     try {
       const { data } = await loginVote(loginUserData);
       setUserInfo(data.result);
-      console.log(data.token);
       saveAuthToCookie(data.token);
       setToken(data.token);
-      console.log(getAuthFromCookie());
       nav(navigatePath);
     } catch (error) {
       console.log(error);
@@ -50,7 +47,7 @@ const LoginForm = () => {
         </div>
         <div className='gap-1 ml-5 mr-5 mt-2 flex flex-col font-sans'>
           <span>패스워드</span>
-          <input ref={inputPw} type="text" className="border border-gray-300" placeholder="패스워드를 입력하세요" />
+          <input ref={inputPw} type="password" className="border border-gray-300" placeholder="패스워드를 입력하세요" />
         </div>
         <div className="flex flex-col items-center px-6 py-5">
           <button className='bg-blue-400 h-10 w-40 rounded-md text-white mb-4' path="/voteMain" onClick={onClickVoteLogin}>로그인</button>

@@ -4,6 +4,9 @@ function loginVote(userData) {
   return instance.post('login', userData);
 }
 
-function registerVote() { }
+function registVote(registData) {
+  return instance.post('regist', registData);
+}
 
-export { loginVote }
+
+export { loginVote, registVote }

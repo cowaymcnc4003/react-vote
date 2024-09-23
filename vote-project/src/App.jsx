@@ -7,6 +7,7 @@ import VoteDetail from './pages/VoteDetail';
 import VoteRegist from './pages/VoteRegist';
 import VoteMain from './pages/VoteMain';
 import { useEffect } from 'react';
+import ExampleComponent from './pages/ExampleComponent';
 
 function App() {
   useEffect(() => {
@@ -20,8 +21,9 @@ function App() {
           <Route path="/login" element={<VoteLogin />} />
           <Route path="/regist" element={<Regist />} />
           <Route path="/voteMain" element={<VoteMain />} />
-          <Route path="/voteDetail" element={<VoteDetail />} />
+          <Route path="/voteDetail/:voteId" element={<VoteDetail />} />
           <Route path="/voteRegist" element={<VoteRegist />} />
+          <Route path="/testPage" element={<ExampleComponent />} />
           <Route path="*" element={<NotPound />} />
         </Routes>
       </div>
