@@ -16,7 +16,8 @@ function App() {
   useEffect(() => {
     document.title = '투표';  // 브라우저 탭 타이틀 변경
     console.log('최초 확인');
-    if (!userInfo.userSeq) {
+    console.log(userInfo.username);
+    if (!userInfo.username) {
       nav('/');
     }
   }, []);  // 빈 배열을 넣어 컴포넌트가 처음 렌더링될 때만 실행
