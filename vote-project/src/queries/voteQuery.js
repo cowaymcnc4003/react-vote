@@ -24,7 +24,7 @@ export const useFetchVotes = (voteData) => {
 
 // 투표 항목 조회
 export const useFetchVote = (voteData) => {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['/vote', voteData], // 객체 형태로 queryKey 전달
     queryFn: () => getVote(voteData), // queryFn에 함수 전달
     // suspense: true, // Suspense 활성화
@@ -37,6 +37,7 @@ export const useFetchVote = (voteData) => {
     isLoading,
     isError,
     error,
+    refetch,
   };
 };
 
