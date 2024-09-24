@@ -49,6 +49,10 @@ const VoteRegistForm = () => {
       voteItems: voteItemArr
     };
     console.log(voteData);
+    if (new Date(startDate) > new Date(endDate)) {
+      alert('시작일이 종료일보다 클 수 없습니다.');
+      return;
+    }
     if (voteData.voteItems.length === 0) {
       alert('항목 추가 누락');
       return;
