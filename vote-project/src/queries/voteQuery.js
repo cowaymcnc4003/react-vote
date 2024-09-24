@@ -52,11 +52,10 @@ export const useFetchVoting = () => {
   };
 };
 
-
-
-export const useFetchRegistVote = (voteData) => {
+// 투표 등록
+export const useFetchRegistVote = () => {
   const mutation = useMutation({
-    mutationFn: () => setRegistVote(voteData), // mutation 함수 전달
+    mutationFn: (voteData) => setRegistVote(voteData), // mutation 함수 전달
   });
 
   return {

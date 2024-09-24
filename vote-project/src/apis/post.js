@@ -9,7 +9,7 @@ function getVote(voteData) {
 }
 
 function setRegistVote(voteData) {
-  return voteInstance.put('votes', voteData);
+  return voteInstance.put('vote', voteData);
 }
 
 function setVoting(voteData) {

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFetchVote, useFetchVoting } from "../../queries/voteQuery";
 import { useEffect, useState } from "react";
 import { useVoteStore } from "../../store/voteStore";
@@ -8,8 +8,9 @@ const VoteDetailForm = () => {
   const { userInfo } = useVoteStore();
   const [voteCheckedItems, setVoteCheckedItems] = useState([]);
   const [voteMode, setVoteMode] = useState(false);
+  const nav = useNavigate();
+  const { data, res, isLoading, isError, error, refetch } = useFetchVote({ voteId, userSeq: userInfo.userSeq });
 
-  const { data, res, isLoading, isError, error, refetch } = useFetchVote({ voteId });
   const { mutate: registerVote, isLoading: isVoting, isError: votingError } = useFetchVoting();
 
   useEffect(() => {
@@ -97,6 +98,11 @@ const VoteDetailForm = () => {
     refetch();
     setVoteMode(false);
   };
+
+  const onClickHistoryBack = () => {
+    nav(-1);
+  }
+
 
   return (
     <div className="mx-auto mt-10 mr-10 ml-10 flex bg-gray-300 flex-col justify-center rounded-md">
