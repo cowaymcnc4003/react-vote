@@ -7,7 +7,7 @@ const VoteDetailForm = () => {
   const { voteId } = useParams();
   const { userInfo } = useVoteStore();
   const [voteCheckedItems, setVoteCheckedItems] = useState([]);
-  const [voteMode, setVoteMode] = useState(false);
+  const [voteMode, setVoteMode] = useState(false); // voteMode false 등록 true 수정
   const nav = useNavigate();
   const { data, res, isLoading, isError, error, refetch } = useFetchVote({ voteId, userSeq: userInfo.userSeq });
 
@@ -73,6 +73,11 @@ const VoteDetailForm = () => {
       gubun: userInfo.gubun,
       voteItems: voteCheckedItems,
     };
+
+    if (!res[0].duplicated && voteData.voteItems.length === 0) {
+      alert("한개 이상 투표하세요.");
+      return;
+    }
 
     registerVote(voteData, {
       onSuccess: (data) => {
