@@ -15,8 +15,6 @@ function App() {
   const nav = useNavigate();
   useEffect(() => {
     document.title = '투표';  // 브라우저 탭 타이틀 변경
-    console.log('최초 확인');
-    console.log(userInfo.username);
     if (!userInfo.username) {
       nav('/');
     }

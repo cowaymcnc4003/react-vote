@@ -31,8 +31,8 @@ const VoteListForm = () => {
     nav(-1);
   };
   const { data, res, isLoading, isError, error } = useFetchVotes({
-    "gubun": "mcnc",
-    "userSeq": 0,
+    "gubun": userInfo.gubun,
+    "userSeq": userInfo.userSeq,
     "startDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth(), 1).getTime(), // 현재 월의 첫 날
     "endDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth() + 1, 0, 23, 59, 59).getTime()
   });

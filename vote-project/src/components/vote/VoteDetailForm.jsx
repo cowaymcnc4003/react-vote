@@ -43,7 +43,7 @@ const VoteDetailForm = () => {
       const isChecked = voteCheckedItems.some(checkedItem => checkedItem.voteItemSeq === item.voteItemSeq);
 
       return (
-        <div key={idx} className="w-[400px] mr-4 ml-4 bg-gray-300 py-2 break-words">
+        <div key={idx} className={`w-[400px] mr-4 ml-4 py-2 break-words ${res[0].duplicated && isTopVote && item.voteCount > 0 ? 'border-2 border-yellow-500' : 'bg-gray-300'}`} >
           {!voteMode ? (
             <>
               <input
@@ -80,9 +80,9 @@ const VoteDetailForm = () => {
     }
 
     registerVote(voteData, {
-      onSuccess: (data) => {
+      onSuccess: async (data) => {
         console.log("투표 성공:", data);
-        refetch();
+        await refetch();
         setVoteMode(true);
       },
       onError: (error) => {
@@ -120,7 +120,7 @@ const VoteDetailForm = () => {
             <span>작성자 : {res[0].username}</span>
             <span>투표기간 : {`${startDataFormat} ~ ${endDataFormat}`}</span>
           </div>
-          <div className="bg-gray-200 gap-4 mx-auto py-4 flex flex-1 flex-col items-center">
+          <div className="bg-gray-200 gap-4 mx-auto py-4 flex flex-1 flex-col items-center overflow-y-auto max-h-[550px]">
             {voteItemList(res[0].voteItems)}
           </div>
           {votingError && <div className="text-red-500 mt-2">투표 중 오류 발생: {votingError.message}</div>}
