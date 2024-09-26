@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useVoteStore } from "../../store/voteStore";
 import VoteRegistItemForm from "./VoteRegistItemForm";
 import { useFetchRegistVote } from "../../queries/voteQuery";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-const VoteRegistForm = ({ voteArr }) => {
+const VoteRegistForm = () => {
 
   const nav = useNavigate();
+  const { voteArr } = useParams();
   const { userInfo } = useVoteStore();
   const today = new Date().toISOString().split('T')[0];
   const nextDate = new Date(today);
@@ -23,7 +24,8 @@ const VoteRegistForm = ({ voteArr }) => {
 
   useEffect(() => {
     if (voteArr) { // 전달 된 투표 세팅
-      onClickEasyVoteCreate(voteArr);
+      console.log(JSON.parse(voteArr));
+      onClickEasyVoteCreate(JSON.parse(voteArr));
     }
   }, []);
 
@@ -69,7 +71,7 @@ const VoteRegistForm = ({ voteArr }) => {
     registVote(voteData, {
       onSuccess: (data) => {
         console.log("투표 생성 성공:", data);
-        nav(-1);
+        nav('/voteMain');
       },
       onError: (error) => {
         console.error("투표 생성 실패:", error);

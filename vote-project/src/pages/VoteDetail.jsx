@@ -5,7 +5,6 @@ import VoteDetailForm from "../components/vote/VoteDetailForm";
 const VoteDetail = () => {
 
   const nav = useNavigate();
-  console.log('11');
 
   const onClickBack = () => {
     nav(-1);

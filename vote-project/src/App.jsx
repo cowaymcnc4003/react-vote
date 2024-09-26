@@ -36,7 +36,7 @@ function App() {
           <Route path="/regist" element={<Regist />} />
           <Route path="/voteMain" element={<VoteMain />} />
           <Route path="/voteDetail/:voteId" element={<VoteDetail />} />
-          <Route path="/voteRegist" element={<VoteRegist />} />
+          <Route path="/voteRegist/:voteArr?" element={<VoteRegist />} />
           <Route path="/testPage" element={<ExampleComponent />} />
           <Route path="*" element={<NotPound />} />
         </Routes>

@@ -25,8 +25,6 @@ const VoteListForm = () => {
   };
 
   const { userInfo } = useVoteStore();
-  console.log(userInfo);
-
 
   const onClickBack = () => {
     nav(-1);
@@ -43,7 +41,6 @@ const VoteListForm = () => {
     "endDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth() + 1, 0, 23, 59, 59).getTime(),
     "reload": reload
   });
-  console.log(isError);
   useEffect(() => {
     if (isError) {
       console.error("투표 데이터 가져오기 실패:", error);

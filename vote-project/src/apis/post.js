@@ -15,10 +15,14 @@ function setRegistVote(voteData) {
 function setVoting(voteData) {
   return voteInstance.post('voting', voteData);
 }
+// 결선 투표 업데이트
+function setRunoffVoting(voteData) {
+  return voteInstance.put('runoffVoting', voteData);
+}
 
 function deleteVote(voteId) {
   return voteInstance.post('deleteVote', voteId);
 }
 
 
-export { getVotes, setRegistVote, getVote, setVoting, deleteVote }
+export { getVotes, setRegistVote, getVote, setVoting, deleteVote, setRunoffVoting }

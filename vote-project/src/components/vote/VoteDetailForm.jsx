@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useFetchVote, useFetchVoting } from "../../queries/voteQuery";
+import { useFetchRunoffVoting, useFetchVote, useFetchVoting } from "../../queries/voteQuery";
 import { useEffect, useState } from "react";
 import { useVoteStore } from "../../store/voteStore";
 
@@ -8,10 +8,19 @@ const VoteDetailForm = () => {
   const { userInfo } = useVoteStore();
   const [voteCheckedItems, setVoteCheckedItems] = useState([]);
   const [voteMode, setVoteMode] = useState(false); // voteMode false 등록 true 수정
+  const [runoffVotingItem, setRunoffVotingItem] = useState({
+    voteTitle: "",
+    voteItem:
+      [
+        // { 'voteName': "(1) 제비파스타 (파스타)" },
+      ]
+  });
   const nav = useNavigate();
   const { data, res, isLoading, isError, error, refetch } = useFetchVote({ voteId, userSeq: userInfo.userSeq });
 
   const { mutate: registerVote, isLoading: isVoting, isError: votingError } = useFetchVoting();
+
+  const { mutate: runoffVoting, isLoading: isRunoffVoting, isError: runoffVotingError } = useFetchRunoffVoting();
 
   useEffect(() => {
     if (res?.[0]) {
@@ -20,6 +29,18 @@ const VoteDetailForm = () => {
         .filter(item => item.isVoted)
         .map(item => ({ voteItemSeq: item.voteItemSeq }));
       setVoteCheckedItems(initialCheckedItems);
+
+
+      // 결선 투표 arr 얻기
+      const maxVoteCount = Math.max(...res[0].voteItems.map(item => item.voteCount));
+      const runoffVotingArr = res[0].voteItems.filter((item) => {
+        return item.voteCount === maxVoteCount;
+      });
+      console.log(runoffVotingArr);
+      setRunoffVotingItem({
+        voteTitle: res[0].votename.split("(결선 투표)")[0] + "(결선 투표)",
+        voteItem: runoffVotingArr
+      })
     }
   }, [res]);
 
@@ -104,10 +125,33 @@ const VoteDetailForm = () => {
     setVoteMode(false);
   };
 
-  const onClickHistoryBack = () => {
-    nav(-1);
-  }
-
+  const onClickRunoffVoting = (type) => {
+    console.log(type);
+    console.log(runoffVotingItem);
+    if (type === 'update') { // 결선 투표 업데이트
+      if (window.confirm("결선 투표를 진행합니까? 기존 투표는 초기화 됩니다.")) {
+        const runoffVotingData =
+        {
+          "votename": runoffVotingItem.voteTitle,
+          "voteId": voteId,
+          "voteItems": runoffVotingItem.voteItem
+        };
+        runoffVoting(runoffVotingData, {
+          onSuccess: async (data) => {
+            console.log("투표 성공:", data);
+            await refetch();
+            setVoteMode(true);
+          },
+          onError: (error) => {
+            console.error("투표 실패:", error);
+          },
+        });
+      }
+    } else { // 결선 투표 생성
+      const path = `/voteRegist/${JSON.stringify(runoffVotingItem)}`;
+      nav(path);
+    }
+  };
 
   return (
     <div className="mx-auto mt-10 mr-10 ml-10 flex bg-gray-300 flex-col justify-center rounded-md">
@@ -126,19 +170,38 @@ const VoteDetailForm = () => {
           {votingError && <div className="text-red-500 mt-2">투표 중 오류 발생: {votingError.message}</div>}
         </div>
       </div>
-      <div className="mx-auto px-6 py-5">
-        {isVoting ? (
-          "로딩 중..."
-        ) : (
+      {isVoting ? (
+        "로딩 중..."
+      ) : (
+        <div className="mx-auto px-6 py-5">
           <button
             className="bg-blue-400 h-10 w-40 rounded-md text-white"
             onClick={voteMode ? onClickUpDateMode : onClickVoting}
             disabled={isVoting}
           >
-            {voteMode ? "수정" : "등록"}
+            {voteMode ? "투표 수정" : "투표 등록"}
           </button>
-        )}
-      </div>
+
+        </div>
+      )}
+      {(res[0].userSeq === userInfo.userSeq && voteMode && runoffVotingItem.voteItem.length > 1) &&
+        <div className="mx-auto px-6 py-5">
+          <button
+            className="bg-orange-400 h-10 w-40 rounded-md text-white"
+            onClick={() => { onClickRunoffVoting('create') }}
+            disabled={isVoting}
+          >
+            결선 투표 생성
+          </button>
+          <button
+            className="bg-orange-400 h-10 w-40 rounded-md ml-2 text-white"
+            onClick={() => { onClickRunoffVoting('update') }}
+            disabled={isVoting}
+          >
+            결선 투표 변경
+          </button>
+        </div>
+      }
     </div>
   );
 };
