@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getVote, getVotes, setRegistVote, setVoting } from "../apis/post";
+import { getVote, getVotes, setRegistVote, setVoting, deleteVote } from "../apis/post";
 import { registVote } from "../apis/auth";
 
 // 투표 기간 리스트
@@ -62,6 +62,18 @@ export const useFetchRegistVote = () => {
     ...mutation, // mutation의 모든 값을 반환 (data, isLoading, isError, error 등)
   };
 };
+
+// 투표 항목 삭제
+export const useFetchDeleteVote = () => {
+  const mutation = useMutation({
+    mutationFn: (voteId) => deleteVote(voteId), // mutation 함수 전달
+  });
+
+  return {
+    ...mutation, // mutation의 모든 값을 반환 (data, isLoading, isError, error 등)
+  };
+};
+
 
 
 // export const userFetchRegist = (registData) => {

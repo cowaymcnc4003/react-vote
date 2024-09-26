@@ -8,6 +8,7 @@ import VoteListItem from "./VoteListItem";
 const VoteListForm = () => {
   const nav = useNavigate();
   const [seleteDate, setSeleteDate] = useState(new Date());
+  const [reload, setReload] = useState(false);
   const onClickNavigateHandler = (e) => {
     e.stopPropagation();
     const navigatePath = e.target.getAttribute('path');
@@ -30,11 +31,17 @@ const VoteListForm = () => {
   const onClickBack = () => {
     nav(-1);
   };
+
+  const handleDeleteVote = () => { // 투표 항목 삭제 트리거
+    setReload(!reload);
+  };
+
   const { data, res, isLoading, isError, error } = useFetchVotes({
     "gubun": userInfo.gubun,
     "userSeq": userInfo.userSeq,
     "startDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth(), 1).getTime(), // 현재 월의 첫 날
-    "endDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth() + 1, 0, 23, 59, 59).getTime()
+    "endDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth() + 1, 0, 23, 59, 59).getTime(),
+    "reload": reload
   });
   console.log(isError);
   useEffect(() => {
@@ -55,7 +62,7 @@ const VoteListForm = () => {
       <div className="bg-gray-300 mr-10 ml-10 flex flex-wrap">
         {
           res.voteData.map((item, i) => {
-            return <VoteListItem key={i} {...item} />
+            return <VoteListItem key={i} {...item} onVoteDelete={handleDeleteVote} />
           })
         }
       </div>
