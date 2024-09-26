@@ -36,7 +36,14 @@ const VoteListForm = () => {
     "startDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth(), 1).getTime(), // 현재 월의 첫 날
     "endDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth() + 1, 0, 23, 59, 59).getTime()
   });
-  console.log(res.voteData);
+  console.log(isError);
+  useEffect(() => {
+    if (isError) {
+      console.error("투표 데이터 가져오기 실패:", error);
+    }
+  }, [isError, error]);
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <div className="mx-auto mt-10 mr-10 ml-10 flex bg-gray-300 flex-col justify-center rounded-md">

@@ -16,3 +16,8 @@ export const useVoteStore = create(devtools(
   ),
   { name: "VoteStore" } // devtools 설정
 ));
+
+export const errStore = create((set) => ({
+  error: null,
+  setError: (error) => set({ error }),
+}));

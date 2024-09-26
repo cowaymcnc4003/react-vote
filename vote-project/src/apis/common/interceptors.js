@@ -24,9 +24,14 @@ export function setInterceptors(instance) {
       return response;
     },
     function (error) {
-      // Any status codes that falls outside the range of 2xx cause this function to trigger
-      // Do something with response error
+      // 에러 로그 추가
+      console.log('Response error:', error.response);
+
+      // 에러를 React Query에서 핸들링하도록 보냅니다.
       return Promise.reject(error);
+      // throw error;
+
+
     },
   );
   return instance;

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import VoteHeader from "../components/common/VoteHeader";
 import VoteListForm from "../components/vote/VoteListForm";
 import { Suspense } from "react";
+import ErrorBoundary from "../components/common/ErroBoundary";
 
 const VoteMain = () => {
   const nav = useNavigate();
@@ -23,9 +24,11 @@ const VoteMain = () => {
           </button>
         }
       />
-      <Suspense fallback={<div>Loading...</div>}>
-        <VoteListForm />
-      </Suspense>
+      {/* <ErrorBoundary> */}
+      {/* <Suspense fallback={<div>Loading...</div>}> */}
+      <VoteListForm />
+      {/* </Suspense> */}
+      {/* </ErrorBoundary> */}
     </>
   );
 };

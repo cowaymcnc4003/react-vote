@@ -1,13 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useVoteStore } from "../../store/voteStore";
 import VoteRegistItemForm from "./VoteRegistItemForm";
 import { useFetchRegistVote } from "../../queries/voteQuery";
 import { useNavigate } from "react-router-dom";
 
-const VoteRegistForm = () => {
+const VoteRegistForm = ({ voteArr }) => {
 
   const nav = useNavigate();
-
   const { userInfo } = useVoteStore();
   const today = new Date().toISOString().split('T')[0];
   const nextDate = new Date(today);
@@ -21,6 +20,13 @@ const VoteRegistForm = () => {
   const inputDupFlg = useRef(false);
   const [voteItemArr, setVoteItems] = useState([]);
   const [inputVoteTitle, setInputVoteTitle] = useState("");
+
+  useEffect(() => {
+    if (voteArr) { // 전달 된 투표 세팅
+      onClickEasyVoteCreate(voteArr);
+    }
+  }, []);
+
 
   const { mutate: registVote, isLoading, isError } = useFetchRegistVote();
 
@@ -75,9 +81,9 @@ const VoteRegistForm = () => {
     // console.log(deleteTitle);
     setVoteItems(voteItemArr.filter((item) => item.voteName !== deleteTitle));
   };
-  const onClickRecommendRunchVote = () => {
-    setVoteItems(recommendRunchVote);
-    inputVoteName.current.value = "점심 식사 " + startDate;
+  const onClickEasyVoteCreate = (voteArr) => {
+    setVoteItems(voteArr.voteItem);
+    inputVoteName.current.value = voteArr.voteTitle;
   }
 
   return (
@@ -147,7 +153,7 @@ const VoteRegistForm = () => {
       <div className="w-[250px] ml-4 py-2 break-words">
         <div className='gap-2 ml-5 flex flex-col font-sans'>
           <span>간편 세팅</span>
-          <button onClick={onClickRecommendRunchVote} className='bg-blue-400 h-10 w-40 rounded-md text-white'>점심 세팅</button>
+          <button onClick={() => onClickEasyVoteCreate(recommendRunchVoteArr)} className='bg-blue-400 h-10 w-40 rounded-md text-white'>점심 세팅</button>
         </div>
       </div>
     </div>
@@ -156,46 +162,58 @@ const VoteRegistForm = () => {
 
 export default VoteRegistForm;
 
-const recommendRunchVote = [
-  { 'voteName': "(1) 제비파스타 (파스타)" },
-  { 'voteName': "(2) 백년불고기 (소불고기정식)" },
-  { 'voteName': "(3) 마부마라탕(마라탕/샹궈)" },
-  { 'voteName': "(4) 호산반점 (중식)" },
-  { 'voteName': "(5) 여수식당 (한식)" },
-  { 'voteName': "(6) 드렁킨타이 (태국 쌀국수}, 팟타이}, 카레)" },
-  { 'voteName': "(7) 얼큰한뼈해장국백년집 (뼈해장국)" },
-  { 'voteName': "(8) 동남집 (곰탕) 갈비탕)" },
-  { 'voteName': "(10) 술찬식탁 (즉석떡볶이)" },
-  { 'voteName': "(11) 두루정 (두루치기) 짜글이)" },
-  { 'voteName': "(13) 타이두 (쌀국수)" },
-  { 'voteName': "(14) 킹콩부대찌개 (부대)" },
-  { 'voteName': "(15) 인생맛껍 (삼겹살정식)" },
-  { 'voteName': "(16) 수왕초장집 (점심회정식)" },
-  { 'voteName': "(17) 어촌마을생선구이굴밥코다리 (생선구이정식)" },
-  { 'voteName': "(18) 1층 묵묵김치찜 (김치찜)" },
-  { 'voteName': "(19) 1층 삼백집 (콩나물국밥)" },
-  { 'voteName': "(20) 1층 나주곰탕 (곰탕)" },
-  { 'voteName': "(21) 1층 천미미 (중식)" },
-  { 'voteName': "(22) 1층 순대실록 (순대국)" },
-  { 'voteName': "(24) 1층 찌개랑덮밥이랑 (찌개}, 덮밥)" },
-  { 'voteName': "(25) 1층 베트남노상식당 (베트남 쌀국수}, 볶음밥)" },
-  { 'voteName': "(26) 1층 마라공방 (마라)" },
-  { 'voteName': "(27) 1층 마마된장 (된장찌개정식)" },
-  { 'voteName': "(28) 1층 본우리반상 (한식정식)" },
-  { 'voteName': "(29) 종가대박집 (대패삼겹살}, 왕돈까스}, 왕냉면)" },
-  { 'voteName': "(30) 청년다방 (즉떡)" },
-  { 'voteName': "(31) 인생쌈밥 (제육/소불고기/쭈꾸미/닭갈비 쌈밥)" },
-  { 'voteName': "(32) 성공관 (소고기무국}, 육회비빔밥}, 된장찌개)" },
-  { 'voteName': "(33) 낭만부대찌개 (부대)" },
-  { 'voteName': "(34) 금성관 (나주곰탕)" },
-  { 'voteName': "(35) 런치투게더 (구내식당)" },
-  { 'voteName': "(36) 맥도날드/맘스터치/버거킹/kfc (버거)" },
-  { 'voteName': "(37) 무한자금성(중식뷔페)" },
-  { 'voteName': "(38) 홍매 (중식)" },
-  { 'voteName': "(39) 백화돈 (김치찌재}, 된장찌개)" },
-  { 'voteName': "(40) 선선어가 (초밥)" },
-  { 'voteName': "(41) 흑백집 (주물럭)" },
-  { 'voteName': "(42) 모락모락칼국수 (칼국수)" },
-  { 'voteName': "(44) 안동김밥 (분식)" },
-  { 'voteName': "(45) 편의점 또는 뚜레쥬르" },
-];
+const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 0부터 시작하므로 +1
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}${month}${day}`;
+};
+
+const recommendRunchVoteArr = {
+  voteTitle: "점심 식사 " + formatDate(new Date()),
+  voteItem:
+    [
+      { 'voteName': "(1) 제비파스타 (파스타)" },
+      { 'voteName': "(2) 백년불고기 (소불고기정식)" },
+      { 'voteName': "(3) 마부마라탕(마라탕/샹궈)" },
+      { 'voteName': "(4) 호산반점 (중식)" },
+      { 'voteName': "(5) 여수식당 (한식)" },
+      { 'voteName': "(6) 드렁킨타이 (태국 쌀국수}, 팟타이}, 카레)" },
+      { 'voteName': "(7) 얼큰한뼈해장국백년집 (뼈해장국)" },
+      { 'voteName': "(8) 동남집 (곰탕) 갈비탕)" },
+      { 'voteName': "(10) 술찬식탁 (즉석떡볶이)" },
+      { 'voteName': "(11) 두루정 (두루치기) 짜글이)" },
+      { 'voteName': "(13) 타이두 (쌀국수)" },
+      { 'voteName': "(14) 킹콩부대찌개 (부대)" },
+      { 'voteName': "(15) 인생맛껍 (삼겹살정식)" },
+      { 'voteName': "(16) 수왕초장집 (점심회정식)" },
+      { 'voteName': "(17) 어촌마을생선구이굴밥코다리 (생선구이정식)" },
+      { 'voteName': "(18) 1층 묵묵김치찜 (김치찜)" },
+      { 'voteName': "(19) 1층 삼백집 (콩나물국밥)" },
+      { 'voteName': "(20) 1층 나주곰탕 (곰탕)" },
+      { 'voteName': "(21) 1층 천미미 (중식)" },
+      { 'voteName': "(22) 1층 순대실록 (순대국)" },
+      { 'voteName': "(24) 1층 찌개랑덮밥이랑 (찌개}, 덮밥)" },
+      { 'voteName': "(25) 1층 베트남노상식당 (베트남 쌀국수}, 볶음밥)" },
+      { 'voteName': "(26) 1층 마라공방 (마라)" },
+      { 'voteName': "(27) 1층 마마된장 (된장찌개정식)" },
+      { 'voteName': "(28) 1층 본우리반상 (한식정식)" },
+      { 'voteName': "(29) 종가대박집 (대패삼겹살}, 왕돈까스}, 왕냉면)" },
+      { 'voteName': "(30) 청년다방 (즉떡)" },
+      { 'voteName': "(31) 인생쌈밥 (제육/소불고기/쭈꾸미/닭갈비 쌈밥)" },
+      { 'voteName': "(32) 성공관 (소고기무국}, 육회비빔밥}, 된장찌개)" },
+      { 'voteName': "(33) 낭만부대찌개 (부대)" },
+      { 'voteName': "(34) 금성관 (나주곰탕)" },
+      { 'voteName': "(35) 런치투게더 (구내식당)" },
+      { 'voteName': "(36) 맥도날드/맘스터치/버거킹/kfc (버거)" },
+      { 'voteName': "(37) 무한자금성(중식뷔페)" },
+      { 'voteName': "(38) 홍매 (중식)" },
+      { 'voteName': "(39) 백화돈 (김치찌재}, 된장찌개)" },
+      { 'voteName': "(40) 선선어가 (초밥)" },
+      { 'voteName': "(41) 흑백집 (주물럭)" },
+      { 'voteName': "(42) 모락모락칼국수 (칼국수)" },
+      { 'voteName': "(44) 안동김밥 (분식)" },
+      { 'voteName': "(45) 편의점 또는 뚜레쥬르" },
+    ]
+};
