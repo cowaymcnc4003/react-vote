@@ -13,8 +13,15 @@ const VoteListItem = ({ startDate, endDate, votename, voteId, userSeq, onVoteDel
   const onClickNavigateHandler = (e) => {
     e.stopPropagation();
     let navigatePath = e.currentTarget.getAttribute('path');
-    navigatePath = navigatePath + "/" + voteId;
-    console.log(navigatePath);
+    let voteParam = "";
+    if (navigatePath === '/voteRegist') {
+      voteParam = JSON.stringify({
+        voteId
+      });
+    } else {
+      voteParam = voteId;
+    }
+    navigatePath = navigatePath + "/" + voteParam;
     nav(navigatePath);
   };
 

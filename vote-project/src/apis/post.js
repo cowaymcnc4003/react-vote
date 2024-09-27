@@ -23,6 +23,9 @@ function setRunoffVoting(voteData) {
 function deleteVote(voteId) {
   return voteInstance.post('deleteVote', voteId);
 }
+// 투표 수정
+function setUpdateVote(voteData) {
+  return voteInstance.post('updateVote', voteData);
+}
 
-
-export { getVotes, setRegistVote, getVote, setVoting, deleteVote, setRunoffVoting }
+export { getVotes, setRegistVote, getVote, setVoting, deleteVote, setRunoffVoting, setUpdateVote }

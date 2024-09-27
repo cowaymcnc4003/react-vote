@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useVoteStore } from "../../store/voteStore";
 import VoteRegistItemForm from "./VoteRegistItemForm";
-import { useFetchRegistVote } from "../../queries/voteQuery";
+import { useFetchRegistVote, useFetchUpdateVote, useFetchVote } from "../../queries/voteQuery";
 import { useNavigate, useParams } from "react-router-dom";
 
 const VoteRegistForm = () => {
@@ -21,16 +21,48 @@ const VoteRegistForm = () => {
   const inputDupFlg = useRef(false);
   const [voteItemArr, setVoteItems] = useState([]);
   const [inputVoteTitle, setInputVoteTitle] = useState("");
+  const [inputVote, setInputVote] = useState();
+  const { data, res, isVoteLoading, isVoteError, error, refetch } = useFetchVote({ voteId: inputVote, userSeq: userInfo.userSeq });
 
   useEffect(() => {
     if (voteArr) { // 전달 된 투표 세팅
-      console.log(JSON.parse(voteArr));
-      onClickEasyVoteCreate(JSON.parse(voteArr));
+      const votoArrToJson = JSON.parse(voteArr);
+      if (votoArrToJson.hasOwnProperty('voteId')) { // 투표 수정 조회
+        setInputVote(votoArrToJson.voteId);
+      } else { // 결선 투표 생성
+        onClickEasyVoteCreate(votoArrToJson);
+      }
     }
   }, []);
+  // 투표 수정 데이터 불러오기
+  useEffect(() => {
+    if (voteArr) {
+      const votoArrToJson = JSON.parse(voteArr);
+      if (res && votoArrToJson.hasOwnProperty('voteId')) {
+        setVoteItems(res[0].voteItems);
+        inputVoteName.current.value = res[0].votename;
+
+        setStartDate(yyyymmddFormatData(res[0].startDate));
+        setEndDate(yyyymmddFormatData(res[0].endDate));
+      }
+    }
+  }, [res]);
+
+
+  useEffect(() => {
+    if (inputVote) { // inputVote가 있을 때만 refetch
+      refetch();
+    }
+  }, [inputVote]); // inputVote 변경 시에 refetch 실행
 
 
   const { mutate: registVote, isLoading, isError } = useFetchRegistVote();
+  const { mutate: updateVote, isUpdateLoading, isUpdateError } = useFetchUpdateVote();
+
+  const yyyymmddFormatData = (date) => {
+    date = new Date(date);
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  }
 
   const onClickRegistVote = () => {
 
@@ -79,14 +111,74 @@ const VoteRegistForm = () => {
     });
   };
 
+  const onClickUpdateVote = () => {
+
+    // startDate와 endDate를 원하는 형식으로 변환
+    const formattedStartDate = new Date(startDate);
+    formattedStartDate.setHours(0, 0, 0, 0); // 시간 00:00:00.000으로 설정
+
+    const formattedEndDate = new Date(endDate);
+    formattedEndDate.setHours(23, 59, 59, 999); // 시간 23:59:59.999으로 설정
+
+    console.log(new Date(startDate).getTime());
+
+    const voteData = {
+      voteId: inputVote,
+      votename: inputVoteName.current.value,
+      gubun: userInfo.gubun,
+      username: userInfo.username,
+      userSeq: userInfo.userSeq,
+      startDate: formattedStartDate.toISOString(), // UTC 날짜를 ISO 문자열로 변환
+      endDate: formattedEndDate.toISOString(),
+      voteOption: {
+        dupl: true,
+      },
+      voteItems: voteItemArr
+    };
+    if (new Date(startDate) > new Date(endDate)) {
+      alert('시작일이 종료일보다 클 수 없습니다.');
+      return;
+    }
+    if (voteData.voteItems.length === 0) {
+      alert('항목 추가 누락');
+      return;
+    }
+    if (!voteData.votename || !voteData.gubun || !voteData.username || !voteData.startDate || !voteData.endDate) {
+      alert('필수항목 누락');
+      return;
+    }
+    console.log(voteData);
+
+    updateVote(voteData, {
+      onSuccess: (data) => {
+        console.log("투표 수정 성공:", data);
+        nav('/voteMain');
+      },
+      onError: (error) => {
+        console.error("투표 수정 실패:", error);
+      },
+    });
+  };
+
   const onClickVoteItemTitleDelete = (deleteTitle) => {
     // console.log(deleteTitle);
     setVoteItems(voteItemArr.filter((item) => item.voteName !== deleteTitle));
   };
+
+  const onVoteTitleEdit = (oldTitle, newTitle) => {
+    // oldTitle과 일치하는 항목을 찾고, 새 제목으로 교체
+    const updatedItems = voteItemArr.map((item) =>
+      item.voteName === oldTitle ? { ...item, voteName: newTitle } : item
+    );
+    // 상태 업데이트
+    setVoteItems(updatedItems);
+  };
+
   const onClickEasyVoteCreate = (voteArr) => {
     setVoteItems(voteArr.voteItem);
     inputVoteName.current.value = voteArr.voteTitle;
   }
+
 
   return (
     <div className="mx-auto mt-10 mr-10 ml-10 flex bg-gray-300 flex-col justify-center rounded-md">
@@ -96,7 +188,7 @@ const VoteRegistForm = () => {
           <div className="bg-gray-200 gap-4 mx-auto py-4 flex flex-1 flex-col items-center overflow-y-auto max-h-[300px]">
             {
               voteItemArr.map((item, i) => {
-                return <VoteRegistItemForm key={i} voteItemTitle={item.voteName} onClickVoteItemTitleDelete={onClickVoteItemTitleDelete} />
+                return <VoteRegistItemForm key={i} voteId={inputVote} voteItemTitle={item.voteName} onClickVoteItemTitleDelete={onClickVoteItemTitleDelete} onVoteTitleEdit={onVoteTitleEdit} />
               })
             }
           </div>
@@ -150,14 +242,17 @@ const VoteRegistForm = () => {
         </div>
       </div>
       <div className="mx-auto px-6 py-5">
-        <button onClick={onClickRegistVote} className='bg-blue-400 h-10 w-40 rounded-md text-white'>등록</button>
+        {
+          inputVote ? <button onClick={onClickUpdateVote} className='bg-blue-400 h-10 w-40 rounded-md text-white'>수정</button> : <button onClick={onClickRegistVote} className='bg-blue-400 h-10 w-40 rounded-md text-white'>등록</button>}
       </div>
-      <div className="w-[250px] ml-4 py-2 break-words">
-        <div className='gap-2 ml-5 flex flex-col font-sans'>
-          <span>간편 세팅</span>
-          <button onClick={() => onClickEasyVoteCreate(recommendRunchVoteArr)} className='bg-blue-400 h-10 w-40 rounded-md text-white'>점심 세팅</button>
+      {!inputVote &&
+        <div className="w-[250px] ml-4 py-2 break-words">
+          <div className='gap-2 ml-5 flex flex-col font-sans'>
+            <span>간편 세팅</span>
+            <button onClick={() => onClickEasyVoteCreate(recommendRunchVoteArr)} className='bg-blue-400 h-10 w-40 rounded-md text-white'>점심 세팅</button>
+          </div>
         </div>
-      </div>
+      }
     </div>
   );
 };

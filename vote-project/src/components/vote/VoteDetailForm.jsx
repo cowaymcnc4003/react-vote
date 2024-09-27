@@ -36,7 +36,6 @@ const VoteDetailForm = () => {
       const runoffVotingArr = res[0].voteItems.filter((item) => {
         return item.voteCount === maxVoteCount;
       });
-      console.log(runoffVotingArr);
       setRunoffVotingItem({
         voteTitle: res[0].votename.split("(결선 투표)")[0] + "(결선 투표)",
         voteItem: runoffVotingArr
