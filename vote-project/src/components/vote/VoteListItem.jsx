@@ -51,8 +51,16 @@ const VoteListItem = ({ startDate, endDate, votename, voteId, userSeq, onVoteDel
 
 
   return (
-    <div className={`mr-5 ml-5 mb-5 mt-5 bg-gray-200 pt-4 text-center rounded-md w-40 flex flex-col justify-between h-full ${duplicated ? 'border-2 border-solid border-green-500 rounded-xl' : 'border-2 border-solid border-red-500 rounded-xl'}`} path="/voteDetail" onClick={onClickNavigateHandler}>
-      <div className="mb-2"><span className='font-bold'>{`${startDataFormat} ~ ${endDataFormat}`}</span></div>
+    <div className={`mr-5 ml-5 mb-5 mt-5 bg-gray-200 pt-4 text-center rounded-md w-40 flex flex-col justify-between h-full`} path="/voteDetail" onClick={onClickNavigateHandler}>
+      <div className="mb-2 flex items-center justify-center">
+        <span className='font-bold mr-1 ml-1'>{`${startDataFormat} ~ ${endDataFormat}`}</span>
+        {duplicated && (
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-blue-500">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+            </svg>
+        )}
+      </div>
+      
       <div className="mb-2 max-w-xs break-words"><span className='font-sans'>{votename}</span></div>
       <div className="mt-auto">
         {userInfo.userSeq === userSeq && (
