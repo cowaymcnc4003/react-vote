@@ -47,6 +47,7 @@ const RegistForm = () => {
           <span>구분</span>
           <select ref={inputGubun} type="" className="border border-gray-300">
             <option>mcnc</option>
+            <option>mcncLunch</option>
           </select>
         </div>
         <div className="flex flex-col items-center px-6 py-5">

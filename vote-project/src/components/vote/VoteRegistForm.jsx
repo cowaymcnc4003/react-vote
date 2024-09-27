@@ -55,7 +55,6 @@ const VoteRegistForm = () => {
     }
   }, [inputVote]); // inputVote 변경 시에 refetch 실행
 
-
   const { mutate: registVote, isLoading, isError } = useFetchRegistVote();
   const { mutate: updateVote, isUpdateLoading, isUpdateError } = useFetchUpdateVote();
 
@@ -161,7 +160,7 @@ const VoteRegistForm = () => {
   };
 
   const onClickVoteItemTitleDelete = (deleteTitle) => {
-    // console.log(deleteTitle);
+    console.log(deleteTitle);
     setVoteItems(voteItemArr.filter((item) => item.voteName !== deleteTitle));
   };
 
@@ -183,16 +182,43 @@ const VoteRegistForm = () => {
   return (
     <div className="mx-auto mt-10 mr-10 ml-10 flex bg-gray-300 flex-col justify-center rounded-md">
       <div className="bg-gray-300 mr-10 ml-10 flex flex-wrap justify-center">
-        <div className="mr-5 ml-5 mb-5 mt-5 bg-gray-200 border border-gray-400">
-          <div className="py-5 px-10 bg-gray-300 text-center" ><span className='font-bold'>투표 항목</span></div>
+        <div className="w-[400px] mr-5 ml-5 mb-5 mt-5 bg-gray-200 border border-gray-400">
+          <div className="py-5 px-10 bg-gray-300 text-center" ><span className='font-bold'>투표 생성</span></div>
+          <div className="bg-gray-200 mx-auto py-3 flex flex-1 flex-col">
+            <div className="w-[250px] ml-4 py-2 break-words">
+              <div className='gap-2 ml-5 flex flex-col font-sans'>
+                <span>투표 타이틀</span>
+                <input ref={inputVoteName} type="text" />
+              </div>
+            </div>
+            <div className="w-[135px] mr-4 ml-4  py-2 break-words">
+              <div className='gap-2 ml-5 flex font-sans'>
+                <div className=''>
+                  <span >시작 날짜</span>
+                  <input value={startDate} onChange={(e) => setStartDate(e.target.value)} type="date" />
+                </div>
+                <div className=''>
+                  <span>종료 날짜</span>
+                  <input value={endDate} onChange={(e) => setEndDate(e.target.value)} type="date" />
+                </div>
+              </div>
+            </div>
+
+            {/* <div className="w-[250px] ml-4  py-2 break-words">
+              <div className='gap-2 ml-5 flex flex-col font-sans'>
+                <span>중복 투표 <input ref={inputDupFlg} type="checkbox" /></span>
+              </div>
+            </div> */}
+          </div>
+          <div className="py-5 px-10 bg-gray-300 text-center" ><span className='font-bold'>투표 후보</span></div>
           <div className="bg-gray-200 gap-4 mx-auto py-4 flex flex-1 flex-col items-center overflow-y-auto max-h-[300px]">
             {
               voteItemArr.map((item, i) => {
-                return <VoteRegistItemForm key={i} voteId={inputVote} voteItemTitle={item.voteName} onClickVoteItemTitleDelete={onClickVoteItemTitleDelete} onVoteTitleEdit={onVoteTitleEdit} />
+                return <VoteRegistItemForm key={i} voteItemArr={voteItemArr} voteId={inputVote} voteItemTitle={item.voteName} onClickVoteItemTitleDelete={onClickVoteItemTitleDelete} onVoteTitleEdit={onVoteTitleEdit} />
               })
             }
           </div>
-          <div className="pb-4 break-words flex justify-center">
+          <div className="pb-4 pt-4  break-words flex justify-center">
             <div className='gap-2 flex font-sans'>
               <input
                 value={inputVoteTitle}
@@ -214,32 +240,10 @@ const VoteRegistForm = () => {
               </button>
             </div>
           </div>
+          {/* <div className="mr-5 ml-5 mb-5 mt-5 bg-gray-200 border border-gray-400">
+          </div> */}
         </div>
-        <div className="w-[400px] mr-5 ml-5 mb-5 mt-5 bg-gray-200 border border-gray-400">
-          {/* <div className="py-5 px-10 bg-gray-300 text-center" ><span className='font-bold'>투표 추가</span></div> */}
-          <div className="bg-gray-200 gap-4 mx-auto py-5 flex flex-1 flex-col">
-            <div className="w-[135px] mr-4 ml-4  py-2 break-words">
-              <div className='gap-2 ml-5 flex flex-col font-sans'>
-                <span>시작 날짜</span>
-                <input value={startDate} onChange={(e) => setStartDate(e.target.value)} type="date" />
-                <span>종료 날짜</span>
-                <input value={endDate} onChange={(e) => setEndDate(e.target.value)} type="date" />
-              </div>
-            </div>
-            <div className="w-[250px] ml-4 py-2 break-words">
-              <div className='gap-2 ml-5 flex flex-col font-sans'>
-                <span>제목</span>
-                <input ref={inputVoteName} type="text" />
-              </div>
-            </div>
 
-            {/* <div className="w-[250px] ml-4  py-2 break-words">
-              <div className='gap-2 ml-5 flex flex-col font-sans'>
-                <span>중복 투표 <input ref={inputDupFlg} type="checkbox" /></span>
-              </div>
-            </div> */}
-          </div>
-        </div>
       </div>
       <div className="mx-auto px-6 py-5">
         {
