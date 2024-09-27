@@ -6,7 +6,6 @@ import { useFetchDeleteVote } from "../../queries/voteQuery";
 const VoteListItem = ({ startDate, endDate, votename, voteId, userSeq, onVoteDelete, duplicated }) => {
   const nav = useNavigate();
   const { userInfo } = useVoteStore();
-  console.log(duplicated);
 
   const startDataFormat = `${String(new Date(startDate).getMonth() + 1).padStart(2, '0')}.${String(new Date(startDate).getDate()).padStart(2, '0')}`;
   const endDataFormat = `${String(new Date(endDate).getMonth() + 1).padStart(2, '0')}.${String(new Date(endDate).getDate()).padStart(2, '0')}`;
@@ -45,7 +44,7 @@ const VoteListItem = ({ startDate, endDate, votename, voteId, userSeq, onVoteDel
 
 
   return (
-    <div className={`mr-5 ml-5 mb-5 mt-5 bg-gray-200 pt-4 text-center rounded-md w-40 flex flex-col justify-between h-full ${duplicated ? 'border-2 border-solid border-green-500 rounded-xl' : ''}`} path="/voteDetail" onClick={onClickNavigateHandler}>
+    <div className={`mr-5 ml-5 mb-5 mt-5 bg-gray-200 pt-4 text-center rounded-md w-40 flex flex-col justify-between h-full ${duplicated ? 'border-2 border-solid border-green-500 rounded-xl' : 'border-2 border-solid border-red-500 rounded-xl'}`} path="/voteDetail" onClick={onClickNavigateHandler}>
       <div className="mb-2"><span className='font-bold'>{`${startDataFormat} ~ ${endDataFormat}`}</span></div>
       <div className="mb-2 max-w-xs break-words"><span className='font-sans'>{votename}</span></div>
       <div className="mt-auto">
