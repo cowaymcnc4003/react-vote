@@ -185,19 +185,19 @@ const VoteDetailForm = () => {
       )}
       {(res[0].userSeq === userInfo.userSeq && voteMode && runoffVotingItem.voteItem.length > 1) &&
         <div className="mx-auto px-6 py-5">
-          <button
+          {/* <button
             className="bg-orange-400 h-10 w-40 rounded-md text-white"
             onClick={() => { onClickRunoffVoting('create') }}
             disabled={isVoting}
           >
             결선 투표 생성
-          </button>
+          </button> */}
           <button
             className="bg-orange-400 h-10 w-40 rounded-md ml-2 text-white"
             onClick={() => { onClickRunoffVoting('update') }}
             disabled={isVoting}
           >
-            결선 투표 변경
+            결선 투표
           </button>
         </div>
       }

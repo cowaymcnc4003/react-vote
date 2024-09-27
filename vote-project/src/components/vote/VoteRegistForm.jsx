@@ -180,6 +180,13 @@ const VoteRegistForm = () => {
     inputVoteName.current.value = voteArr.voteTitle;
   }
 
+  const onClickInputVoteTitle = () => {
+    if (inputVoteTitle) {
+      setVoteItems([...voteItemArr, { 'voteName': inputVoteTitle }]);
+      setInputVoteTitle(''); // 입력 필드 초기화
+    }
+  }
+
 
   return (
     <div className="mx-auto mt-10 mr-10 ml-10 flex bg-gray-300 flex-col justify-center rounded-md">
@@ -228,14 +235,14 @@ const VoteRegistForm = () => {
                 placeholder="투표 항목 추가"
                 className="ml-4 w-[220px]"
                 type="text"
-              />
-              <button
-                onClick={() => {
-                  if (inputVoteTitle) {
-                    setVoteItems([...voteItemArr, { 'voteName': inputVoteTitle }]);
-                    setInputVoteTitle(''); // 입력 필드 초기화
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    onClickInputVoteTitle();
                   }
                 }}
+              />
+              <button
+                onClick={onClickInputVoteTitle}
                 className='bg-blue-400 h-8 w-20 rounded-md text-white mr-4'
               >
                 추가
