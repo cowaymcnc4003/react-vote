@@ -7,7 +7,7 @@ const VoteDetail = () => {
   const nav = useNavigate();
 
   const onClickBack = () => {
-    nav(-1);
+    nav('/voteMain');
   }
   return (
     <>

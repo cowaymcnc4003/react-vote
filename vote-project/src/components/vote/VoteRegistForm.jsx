@@ -100,9 +100,11 @@ const VoteRegistForm = () => {
       return;
     }
     registVote(voteData, {
-      onSuccess: (data) => {
-        console.log("투표 생성 성공:", data);
-        nav('/voteMain');
+      onSuccess: ({ data }) => {
+        console.log("투표 생성 성공:");
+        const voteId = data.data.voteId;
+        const navigatePath = `/voteDetail/${voteId}`;
+        nav(navigatePath);
       },
       onError: (error) => {
         console.error("투표 생성 실패:", error);
