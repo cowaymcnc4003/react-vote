@@ -10,7 +10,7 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState(""); // 에러 메시지 상태 추가
 
   useEffect(() => {
-    deleteCookie('vote_auth');
+    // deleteCookie('vote_auth');
     // 상태를 설정하는 것이 올바르게 작동하는지 확인
   }, []);
 
@@ -24,7 +24,7 @@ const LoginForm = () => {
   };
 
   const onClickVoteLogin = async (e) => {
-    if (inputId.current.value === "" || inputPw.current.value) {
+    if (inputId.current.value === "" || inputPw.current.value === "") {
       setErrorMessage("아이디 패스워드를 입력하세요"); // 일반 에러 메시지
       return;
     }
@@ -123,7 +123,7 @@ const LoginForm = () => {
           <button className='bg-blue-400 h-10 w-40 rounded-md text-white' path="/regist" onClick={onClickNavigateHandler} >회원가입</button>
         </div>
         <div className="flex justify-center pt-3">
-          <button className='bg-red-400 h-10 w-40 rounded-md text-white' path="/voteMain" onClick={onClickGuestLogin}>게스트 로그인</button>
+          <button className='bg-red-400 h-10 w-40 rounded-md text-white' path="/voteMain" onClick={onClickGuestLogin}>게스트 24시간 로그인</button>
         </div>
 
       </div>

@@ -9,6 +9,7 @@ import VoteMain from './pages/VoteMain';
 import { useEffect } from 'react';
 import ExampleComponent from './pages/ExampleComponent';
 import { errStore, useVoteStore } from './store/voteStore';
+import { deleteCookie } from './util/cookies';
 
 function App() {
   const { token, userInfo } = useVoteStore();
@@ -18,13 +19,20 @@ function App() {
     document.title = '투표';  // 브라우저 탭 타이틀 변경
     if (!userInfo.username) {
       nav('/');
+    } else {
+      nav('/voteMain');
     }
   }, []);  // 빈 배열을 넣어 컴포넌트가 처음 렌더링될 때만 실행
 
   useEffect(() => {
     if (error) {
       setError(null); // 에러 상태 초기화
-      nav('/');
+      deleteCookie('vote_auth');
+      useVoteStore.setState({
+        userInfo: {},    // userInfo 초기화
+        token: ''        // token 초기화
+      });
+      nav('/'); // 홈으로 이동
     }
   }, [error]); // 에러가 감지되었을때
   return (
