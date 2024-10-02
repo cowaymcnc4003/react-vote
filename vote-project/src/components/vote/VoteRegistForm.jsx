@@ -189,8 +189,8 @@ const VoteRegistForm = () => {
 
 
   return (
-    <div className="mx-auto mt-10 mr-10 ml-10 flex bg-gray-300 flex-col justify-center rounded-md">
-      <div className="bg-gray-300 mr-10 ml-10 flex flex-wrap justify-center">
+    <div className="w-full mx-auto mt-10 flex flex-col bg-gray-300 justify-center items-center rounded-md">
+      <div className="w-full bg-gray-300 mr-1 ml-1 flex flex-wrap justify-center mb-10">
         <div className="w-[400px] mr-5 ml-5 mb-5 mt-5 bg-gray-200 border border-gray-400">
           <div className="py-5 px-10 bg-gray-300 text-center" ><span className='font-bold'>투표 생성</span></div>
           <div className="bg-gray-200 mx-auto py-3 flex flex-1 flex-col">
@@ -201,7 +201,7 @@ const VoteRegistForm = () => {
               </div>
             </div>
             <div className="w-[135px] mr-4 ml-4  py-2 break-words">
-              <div className='gap-2 ml-5 flex font-sans'>
+              <div className='gap-2 ml-5 flex-row1 font-sans'>
                 <div className=''>
                   <span >시작 날짜</span>
                   <input value={startDate} onChange={(e) => setStartDate(e.target.value)} type="date" />
@@ -249,23 +249,25 @@ const VoteRegistForm = () => {
               </button>
             </div>
           </div>
+          {!inputVote &&
+            <div className="">
+              <div className='gap-2 ml-5 flex flex-col font-sans'>
+                <button onClick={() => onClickEasyVoteCreate(recommendRunchVoteArr)} className='bg-blue-400 h-10 w-40 rounded-md text-white'>점심 간편 세팅</button>
+              </div>
+            </div>
+          }
           {/* <div className="mr-5 ml-5 mb-5 mt-5 bg-gray-200 border border-gray-400">
           </div> */}
         </div>
 
       </div>
-      <div className="mx-auto px-6 py-5">
-        {
-          inputVote ? <button onClick={onClickUpdateVote} className='bg-blue-400 h-10 w-40 rounded-md text-white'>수정</button> : <button onClick={onClickRegistVote} className='bg-blue-400 h-10 w-40 rounded-md text-white'>등록</button>}
-      </div>
-      {!inputVote &&
-        <div className="w-[250px] ml-4 py-2 break-words">
-          <div className='gap-2 ml-5 flex flex-col font-sans'>
-            <span>간편 세팅</span>
-            <button onClick={() => onClickEasyVoteCreate(recommendRunchVoteArr)} className='bg-blue-400 h-10 w-40 rounded-md text-white'>점심 세팅</button>
-          </div>
+      <div className="fixed flex bottom-2.5">
+        <div className="">
+          {
+            inputVote ? <button onClick={onClickUpdateVote} className='bg-blue-400 h-10 w-40 rounded-md text-white'>수정</button> : <button onClick={onClickRegistVote} className='bg-blue-400 h-10 w-40 rounded-md text-white'>등록</button>}
         </div>
-      }
+
+      </div>
     </div>
   );
 };

@@ -15,7 +15,7 @@ const VoteRegistItemForm = ({ voteItemArr, voteItemTitle, onClickVoteItemTitleDe
   }, [voteItemArr]);
 
   return (
-    <div className="w-[400px] mr-4 ml-4 bg-gray-300 py-2 break-words flex justify-between">
+    <div className="w-[300px] mr-4 ml-4 bg-gray-300 py-2 break-words flex justify-between">
       {voteId ? (
         <input
           type="text"

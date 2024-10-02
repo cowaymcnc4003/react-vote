@@ -63,7 +63,7 @@ const VoteDetailForm = () => {
       const isChecked = voteCheckedItems.some(checkedItem => checkedItem.voteItemSeq === item.voteItemSeq);
 
       return (
-        <div key={idx} className={`w-[400px] mr-4 ml-4 py-2 break-words ${res[0].duplicated && isTopVote && item.voteCount > 0 ? 'border-2 border-yellow-500' : 'bg-gray-300'}`} >
+        <div onClick={() => voteItemCheckClick(item.voteItemSeq, !isChecked)} key={idx} className={`w-[310px] md:w-[400px] mr-4 ml-4 py-2 break-words ${res[0].duplicated && isTopVote && item.voteCount > 0 ? 'border-2 border-yellow-500' : 'bg-gray-300'}`} >
           {!voteMode ? (
             <>
               <input
@@ -78,7 +78,7 @@ const VoteDetailForm = () => {
             <>
               <span className="ml-5 font-sans">{item.voteName}</span>
               <span>({item.voteCount}표)</span>
-              {isTopVote && <span className="ml-2">🌠 최고 득표!</span>}
+              {isTopVote && <span className="ml-2">🌠</span>}
             </>
           )}
         </div>
@@ -153,15 +153,15 @@ const VoteDetailForm = () => {
   };
 
   return (
-    <div className="mx-auto mt-10 mr-10 ml-10 flex bg-gray-300 flex-col justify-center rounded-md">
-      <div className="bg-gray-300 mr-10 ml-10 flex flex-wrap justify-center">
+    <div className="w-full mx-auto mt-10 flex flex-col bg-gray-300 justify-center items-center rounded-md">
+      <div className="w-full bg-gray-300 mr-1 ml-1 flex flex-wrap justify-center mb-10">
         <div className="mr-5 ml-5 mb-5 mt-5 bg-gray-200 border border-gray-400">
           <div className="py-5 px-10 bg-gray-300 text-center">
             <span className="font-bold">{res[0].votename}</span>
           </div>
-          <div className="pt-3 px-5 flex justify-between">
-            <span>작성자 : {res[0].username}</span>
-            <span>투표기간 : {`${startDataFormat} ~ ${endDataFormat}`}</span>
+          <div className="pt-3 px-5">
+            <div>작성자 : {res[0].username}</div>
+            <div>투표기간 : {`${startDataFormat} ~ ${endDataFormat}`}</div>
           </div>
           <div className="bg-gray-200 gap-4 mx-auto py-4 flex flex-1 flex-col items-center overflow-y-auto max-h-[550px]">
             {voteItemList(res[0].voteItems)}
@@ -169,38 +169,40 @@ const VoteDetailForm = () => {
           {votingError && <div className="text-red-500 mt-2">투표 중 오류 발생: {votingError.message}</div>}
         </div>
       </div>
-      {isVoting ? (
-        "로딩 중..."
-      ) : (
-        <div className="mx-auto px-6 py-5">
-          <button
-            className="bg-blue-400 h-10 w-40 rounded-md text-white"
-            onClick={voteMode ? onClickUpDateMode : onClickVoting}
-            disabled={isVoting}
-          >
-            {voteMode ? "투표 수정" : "투표 등록"}
-          </button>
+      <div className="fixed flex bottom-2.5">
+        {isVoting ? (
+          "로딩 중..."
+        ) : (
+          <div className="">
+            <button
+              className="bg-blue-400 h-10 w-40 rounded-md text-white"
+              onClick={voteMode ? onClickUpDateMode : onClickVoting}
+              disabled={isVoting}
+            >
+              {voteMode ? "수정" : "등록"}
+            </button>
 
-        </div>
-      )}
-      {(res[0].userSeq === userInfo.userSeq && voteMode && runoffVotingItem.voteItem.length > 1) &&
-        <div className="mx-auto px-6 py-5">
-          {/* <button
+          </div>
+        )}
+        {(res[0].userSeq === userInfo.userSeq && voteMode && runoffVotingItem.voteItem.length > 1) &&
+          <div className="">
+            {/* <button
             className="bg-orange-400 h-10 w-40 rounded-md text-white"
             onClick={() => { onClickRunoffVoting('create') }}
             disabled={isVoting}
           >
             결선 투표 생성
           </button> */}
-          <button
-            className="bg-orange-400 h-10 w-40 rounded-md ml-2 text-white"
-            onClick={() => { onClickRunoffVoting('update') }}
-            disabled={isVoting}
-          >
-            결선 투표
-          </button>
-        </div>
-      }
+            <button
+              className="bg-orange-400 h-10 w-40 rounded-md ml-2 text-white"
+              onClick={() => { onClickRunoffVoting('update') }}
+              disabled={isVoting}
+            >
+              결선 투표
+            </button>
+          </div>
+        }
+      </div>
     </div>
   );
 };
