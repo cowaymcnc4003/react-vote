@@ -8,5 +8,9 @@ function registVote(registData) {
   return instance.post('regist', registData);
 }
 
+function guestLogin(userData) {
+  return instance.post('login', userData);
+}
+
 
 export { loginVote, registVote }
