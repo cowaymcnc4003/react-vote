@@ -21,7 +21,7 @@ const VoteRegistItemForm = ({ voteItemArr, voteItemTitle, onClickVoteItemTitleDe
           type="text"
           value={editableTitle}
           onChange={handleInputChange}  // 수정된 제목을 상태에 반영
-          className="ml-3 w-[280px]" // 고정된 너비 설정
+          className="ml-3 w-[220px]" // 고정된 너비 설정
         />
       ) : (
         <span className="ml-5 font-sans">{voteItemTitle}</span>

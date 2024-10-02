@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { guestLogin, loginVote } from "../../apis/auth";
 import { useEffect, useRef, useState } from "react";
-import { getAuthFromCookie, saveAuthToCookie } from "../../util/cookies";
+import { deleteCookie, getAuthFromCookie, saveAuthToCookie } from "../../util/cookies";
 import { useVoteStore } from "../../store/voteStore";
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 
@@ -10,6 +10,7 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState(""); // 에러 메시지 상태 추가
 
   useEffect(() => {
+    deleteCookie('vote_auth');
     // 상태를 설정하는 것이 올바르게 작동하는지 확인
   }, []);
 
@@ -75,7 +76,9 @@ const LoginForm = () => {
       saveAuthToCookie(data.token);
       setToken(data.token);
       setErrorMessage("");  // 로그인 성공 시 에러 메시지 초기화
-      nav(navigatePath);
+      setTimeout(() => {
+        nav(navigatePath);
+      }, 300);
     } catch (error) {
       console.error(error);
 

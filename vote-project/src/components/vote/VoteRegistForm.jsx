@@ -22,6 +22,9 @@ const VoteRegistForm = () => {
   const [voteItemArr, setVoteItems] = useState([]);
   const [inputVoteTitle, setInputVoteTitle] = useState("");
   const [inputVote, setInputVote] = useState();
+  const [scrolDownFlg, setScrolDownFlg] = useState(false);
+  const voteItemsScrol = useRef();
+  const voteRegistScrol = useRef();
   const { data, res, isVoteLoading, isVoteError, error, refetch } = useFetchVote({ voteId: inputVote, userSeq: userInfo.userSeq });
 
   useEffect(() => {
@@ -54,6 +57,10 @@ const VoteRegistForm = () => {
       refetch();
     }
   }, [inputVote]); // inputVote 변경 시에 refetch 실행
+
+  useEffect(() => {
+    voteItemsScrolbottom();
+  }, [scrolDownFlg]);
 
   const { mutate: registVote, isLoading, isError } = useFetchRegistVote();
   const { mutate: updateVote, isUpdateLoading, isUpdateError } = useFetchUpdateVote();
@@ -178,18 +185,33 @@ const VoteRegistForm = () => {
   const onClickEasyVoteCreate = (voteArr) => {
     setVoteItems(voteArr.voteItem);
     inputVoteName.current.value = voteArr.voteTitle;
+    setScrolDownFlg(!scrolDownFlg);
   }
 
   const onClickInputVoteTitle = () => {
     if (inputVoteTitle) {
       setVoteItems([...voteItemArr, { 'voteName': inputVoteTitle }]);
       setInputVoteTitle(''); // 입력 필드 초기화
+      setScrolDownFlg(!scrolDownFlg);
     }
+  }
+
+  const voteItemsScrolbottom = () => {
+    voteItemsScrol.current.scrollTo({
+      top: voteItemsScrol.current.scrollHeight,
+      left: 0,
+      behavior: 'smooth'
+    });
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      left: 0,
+      behavior: 'smooth' // 부드럽게 스크롤
+    });
   }
 
 
   return (
-    <div className="w-full mx-auto mt-10 flex flex-col bg-gray-300 justify-center items-center rounded-md">
+    <div ref={voteRegistScrol} className="w-full mx-auto mt-10 flex flex-col bg-gray-300 justify-center items-center rounded-md">
       <div className="w-full bg-gray-300 mr-1 ml-1 flex flex-wrap justify-center mb-10">
         <div className="w-[400px] mr-5 ml-5 mb-5 mt-5 bg-gray-200 border border-gray-400">
           <div className="py-5 px-10 bg-gray-300 text-center" ><span className='font-bold'>투표 생성</span></div>
@@ -220,7 +242,7 @@ const VoteRegistForm = () => {
             </div> */}
           </div>
           <div className="py-5 px-10 bg-gray-300 text-center" ><span className='font-bold'>투표 후보</span></div>
-          <div className="bg-gray-200 gap-4 mx-auto py-4 flex flex-1 flex-col items-center overflow-y-auto max-h-[300px]">
+          <div ref={voteItemsScrol} className="bg-gray-200 gap-4 mx-auto py-4 flex flex-1 flex-col items-center overflow-y-auto max-h-[300px]">
             {
               voteItemArr.map((item, i) => {
                 return <VoteRegistItemForm key={i} voteItemArr={voteItemArr} voteId={inputVote} voteItemTitle={item.voteName} onClickVoteItemTitleDelete={onClickVoteItemTitleDelete} onVoteTitleEdit={onVoteTitleEdit} />
