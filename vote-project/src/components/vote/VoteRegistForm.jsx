@@ -250,9 +250,9 @@ const VoteRegistForm = () => {
             </div>
           </div>
           {!inputVote &&
-            <div className="">
-              <div className='gap-2 ml-5 flex flex-col font-sans'>
-                <button onClick={() => onClickEasyVoteCreate(recommendRunchVoteArr)} className='bg-blue-400 h-10 w-40 rounded-md text-white'>점심 간편 세팅</button>
+            <div className="px-2 py-2">
+              <div className='flex font-sans'>
+                <span onClick={() => onClickEasyVoteCreate(recommendRunchVoteArr)} className='bg-blue-400 rounded-md text-white'>점심 간편 세팅</span>
               </div>
             </div>
           }

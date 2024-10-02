@@ -38,7 +38,7 @@ const RegistForm = () => {
 
   return (
     <div className="mx-auto mt-10 mr-10 ml-10 flex bg-gray-300 flex-row justify-center rounded-md">
-      <div className="bg-white w-[350px] my-56 py-2 break-word">
+      <div className="bg-white w-[350px] md:my-56 py-2 break-word">
         <div className='gap-1 mt-2 ml-5 mr-5 flex flex-col font-sans'>
           <span>아이디</span>
           <input ref={inputId} type="text" className="border border-gray-300" placeholder="아이디를 입력하세요" />
