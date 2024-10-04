@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { deleteCookie, getAuthFromCookie, saveAuthToCookie } from "../../util/cookies";
 import { useVoteStore } from "../../store/voteStore";
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
+import axios from "axios";
 
 const LoginForm = () => {
   const { setUserInfo, setToken, userInfo } = useVoteStore();
@@ -54,6 +55,15 @@ const LoginForm = () => {
       }
     }
   };
+
+  const onClickTest = async () => {
+    try {
+      const response = await axios.get('http://mcnccoway.asuscomm.com:9000/');
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error.response ? error.response.data : error.message);
+    }
+  }
 
   const onClickGuestLogin = async (e) => {
     const fp = await FingerprintJS.load();
@@ -124,6 +134,9 @@ const LoginForm = () => {
         </div>
         <div className="flex justify-center pt-3">
           <button className='bg-red-400 h-10 w-40 rounded-md text-white' path="/voteMain" onClick={onClickGuestLogin}>게스트 30일 로그인</button>
+        </div>
+        <div className="flex justify-center pt-3">
+          <button className='bg-red-400 h-10 w-40 rounded-md text-white' path="/voteMain" onClick={onClickTest}>크로스 오리진 테스트</button>
         </div>
 
       </div>
