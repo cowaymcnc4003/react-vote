@@ -55,6 +55,15 @@ const LoginForm = () => {
     }
   };
 
+  // const onClickTest = async () => {
+  //   try {
+  //     const response = await axios.get('http://mcnccoway.asuscomm.com:9000/');
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error('Error:', error.response ? error.response.data : error.message);
+  //   }
+  // }
+
   const onClickGuestLogin = async (e) => {
     const fp = await FingerprintJS.load();
     const result = await fp.get();
@@ -125,7 +134,9 @@ const LoginForm = () => {
         <div className="flex justify-center pt-3">
           <button className='bg-red-400 h-10 w-40 rounded-md text-white' path="/voteMain" onClick={onClickGuestLogin}>게스트 30일 로그인</button>
         </div>
-
+        {/* <div className="flex justify-center pt-3">
+          <button className='bg-red-400 h-10 w-40 rounded-md text-white' path="/voteMain" onClick={onClickTest}>크로스 오리진 테스트</button>
+        </div> */}
       </div>
     </div>
   );
