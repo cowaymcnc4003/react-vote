@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import ExampleComponent from './pages/ExampleComponent';
 import { errStore, useVoteStore } from './store/voteStore';
 import { deleteCookie } from './util/cookies';
+import VoteUserSetting from './pages/VoteUserSetting';
 
 function App() {
   const { token, userInfo } = useVoteStore();
@@ -46,6 +47,7 @@ function App() {
           <Route path="/voteDetail/:voteId" element={<VoteDetail />} />
           <Route path="/voteRegist/:voteArr?" element={<VoteRegist />} />
           <Route path="/testPage" element={<ExampleComponent />} />
+          <Route path="/voteUser" element={<VoteUserSetting />} />
           <Route path="*" element={<NotPound />} />
         </Routes>
       </div>

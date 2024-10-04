@@ -123,7 +123,7 @@ const LoginForm = () => {
           <button className='bg-blue-400 h-10 w-40 rounded-md text-white' path="/regist" onClick={onClickNavigateHandler} >회원가입</button>
         </div>
         <div className="flex justify-center pt-3">
-          <button className='bg-red-400 h-10 w-40 rounded-md text-white' path="/voteMain" onClick={onClickGuestLogin}>게스트 24시간 로그인</button>
+          <button className='bg-red-400 h-10 w-40 rounded-md text-white' path="/voteMain" onClick={onClickGuestLogin}>게스트 30일 로그인</button>
         </div>
 
       </div>

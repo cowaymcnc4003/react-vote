@@ -9,7 +9,7 @@ import { useVoteStore } from "../store/voteStore";
 const VoteMain = () => {
   const nav = useNavigate();
   const onClickBack = () => {
-    if (window.confirm("로그아웃 하시겠습니까?")) {
+    if (window.confirm("로그아웃 하시겠습니까? (게스트 계정은 로그아웃시 소멸 합니다.)")) {
       deleteCookie('vote_auth');
       useVoteStore.setState({
         userInfo: {},    // userInfo 초기화
@@ -54,6 +54,9 @@ const VoteMain = () => {
           >
             <span>{"<"}</span>
           </button>
+        }
+        rightChild={
+          <div></div>
         }
       />
       {/* <ErrorBoundary> */}
