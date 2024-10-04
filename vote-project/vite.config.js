@@ -6,7 +6,12 @@ export default defineConfig({
   plugins: [react()],
   base: '/react-vote/', // GitHub Pages에서 사용하는 리포지토리 이름으로 교체
   server: {
-    host: '0.0.0.0',
-    port: 9780
+    proxy: {
+      '/api': {
+        target: 'http://mcnccoway.asuscomm.com:9000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   },
 })
