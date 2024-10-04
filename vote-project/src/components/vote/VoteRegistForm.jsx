@@ -8,7 +8,7 @@ const VoteRegistForm = () => {
 
   const nav = useNavigate();
   const { voteArr } = useParams();
-  const { userInfo } = useVoteStore();
+  const { userInfo, setSelectedDate } = useVoteStore();
   const today = new Date().toISOString().split('T')[0];
   const nextDate = new Date(today);
   nextDate.setDate(nextDate.getDate() + 1);
@@ -109,6 +109,7 @@ const VoteRegistForm = () => {
     registVote(voteData, {
       onSuccess: ({ data }) => {
         console.log("투표 생성 성공:");
+        setSelectedDate(formattedStartDate);
         const voteId = data.data.voteId;
         const navigatePath = `/voteDetail/${voteId}`;
         nav(navigatePath);

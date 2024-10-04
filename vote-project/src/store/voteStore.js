@@ -8,7 +8,9 @@ export const useVoteStore = create(devtools(
       userInfo: {},
       token: getAuthFromCookie() || '', // token 초기값 설정
       setUserInfo: (context) => set((state) => ({ ...state, userInfo: context })), // userInfo 상태 업데이트
-      setToken: (token) => set((state) => ({ ...state, token })) // token 상태 업데이트
+      setToken: (token) => set((state) => ({ ...state, token })), // token 상태 업데이트
+      selectedDate: new Date(),
+      setSelectedDate: (selectedDate) => set((state) => ({ ...state, selectedDate })),
     }),
     {
       name: 'voteUserInfo', // 로컬스토리지에 저장되는 이름
