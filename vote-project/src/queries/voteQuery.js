@@ -1,13 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getVote, getVotes, setRegistVote, setVoting, deleteVote, setRunoffVoting, setUpdateVote } from "../apis/post";
+import { getVote, getVotes, setRegistVote, setVoting, deleteVote, setRunoffVoting, setUpdateVote, setVoteClose } from "../apis/post";
 import { registVote } from "../apis/auth";
 
 // 투표 기간 리스트
-export const useFetchVotes = (voteData) => {
-  const { data, isLoading, isError, error } = useQuery({
+export const useFetchVotes = (voteData, options = {}) => {
+  const { enabled = true } = options;  // enabled 값을 기본 true로 설정, 외부에서 제어 가능
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['/votes', voteData], // 객체 형태로 queryKey 전달
     queryFn: () => getVotes(voteData), // queryFn에 함수 전달
     suspense: false, // Suspense 활성화
+    enabled, // enabled 옵션 추가
   });
   const { data: res } = data || {};
 
@@ -17,6 +19,7 @@ export const useFetchVotes = (voteData) => {
     isLoading,
     isError,
     error,
+    refetch
   };
 };
 
@@ -78,7 +81,18 @@ export const useFetchDeleteVote = () => {
 
 export const useFetchRunoffVoting = () => {
   const mutation = useMutation({
-    mutationFn: (voteId) => setRunoffVoting(voteId), // mutation 함수 전달
+    mutationFn: (voteData) => setRunoffVoting(voteData), // mutation 함수 전달
+  });
+
+  return {
+    ...mutation, // mutation의 모든 값을 반환 (data, isLoading, isError, error 등)
+  };
+};
+
+// 투표 종료
+export const useFetchVoteClose = () => {
+  const mutation = useMutation({
+    mutationFn: (voteId) => setVoteClose(voteId), // mutation 함수 전달
   });
 
   return {

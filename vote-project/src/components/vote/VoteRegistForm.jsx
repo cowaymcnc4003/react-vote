@@ -109,7 +109,7 @@ const VoteRegistForm = () => {
     registVote(voteData, {
       onSuccess: ({ data }) => {
         console.log("투표 생성 성공:");
-        setSelectedDate(formattedStartDate);
+        // setSelectedDate(formattedStartDate);
         const voteId = data.data.voteId;
         const navigatePath = `/voteDetail/${voteId}`;
         nav(navigatePath);

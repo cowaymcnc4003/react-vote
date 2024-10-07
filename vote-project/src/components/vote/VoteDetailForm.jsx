@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useFetchRunoffVoting, useFetchVote, useFetchVoting } from "../../queries/voteQuery";
+import { useFetchRunoffVoting, useFetchVote, useFetchVoteClose, useFetchVoting } from "../../queries/voteQuery";
 import { useEffect, useState } from "react";
 import { useVoteStore } from "../../store/voteStore";
 
@@ -21,6 +21,8 @@ const VoteDetailForm = () => {
   const { mutate: registerVote, isLoading: isVoting, isError: votingError } = useFetchVoting();
 
   const { mutate: runoffVoting, isLoading: isRunoffVoting, isError: runoffVotingError } = useFetchRunoffVoting();
+
+  const { mutate: voteClose, isLoading: isVoteClose, isError: voteCloseError } = useFetchVoteClose();
 
   useEffect(() => {
     if (res?.[0]) {
@@ -124,6 +126,23 @@ const VoteDetailForm = () => {
     setVoteMode(false);
   };
 
+  const onClickVoteClose = () => {
+    if (window.confirm("투표를 종료를 진행합니까?")) {
+      voteClose({
+        voteId
+      }, {
+        onSuccess: async (data) => {
+          console.log("투표 종료 성공:", data);
+          // await refetch();
+          // setVoteMode(true);
+        },
+        onError: (error) => {
+          console.error("투표 종료 실패:", error);
+        },
+      });
+    }
+  }
+
   const onClickRunoffVoting = (type) => {
     console.log(type);
     console.log(runoffVotingItem);
@@ -175,7 +194,7 @@ const VoteDetailForm = () => {
         ) : (
           <div className="">
             <button
-              className="bg-blue-400 h-10 w-40 rounded-md text-white"
+              className="bg-blue-400 h-10 w-20 rounded-md text-white"
               onClick={voteMode ? onClickUpDateMode : onClickVoting}
               disabled={isVoting}
             >
@@ -194,11 +213,29 @@ const VoteDetailForm = () => {
             결선 투표 생성
           </button> */}
             <button
-              className="bg-orange-400 h-10 w-40 rounded-md ml-2 text-white"
+              className="bg-orange-400 h-10 w-20 rounded-md ml-2 text-white"
               onClick={() => { onClickRunoffVoting('update') }}
               disabled={isVoting}
             >
               결선 투표
+            </button>
+          </div>
+        }
+        {(res[0].userSeq === userInfo.userSeq && voteMode && runoffVotingItem.voteItem.length > 1) &&
+          <div className="">
+            {/* <button
+            className="bg-orange-400 h-10 w-40 rounded-md text-white"
+            onClick={() => { onClickRunoffVoting('create') }}
+            disabled={isVoting}
+          >
+            결선 투표 생성
+          </button> */}
+            <button
+              className="bg-orange-400 h-10 w-20 rounded-md ml-2 text-white"
+              onClick={() => { onClickVoteClose() }}
+              disabled={isVoting}
+            >
+              투표 종료
             </button>
           </div>
         }

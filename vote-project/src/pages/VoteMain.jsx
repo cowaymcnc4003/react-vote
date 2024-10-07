@@ -46,7 +46,7 @@ const VoteMain = () => {
   return (
     <>
       <VoteHeader
-        title={"날짜 선택"}
+        title={"투표 메인"}
         leftChild={
           <button
             className="bg-gray-400 px-4 py-2 mx-auto rounded text-3xl"

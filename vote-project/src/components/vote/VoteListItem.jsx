@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useVoteStore } from "../../store/voteStore";
 import { useFetchDeleteVote } from "../../queries/voteQuery";
 
-const VoteListItem = ({ startDate, endDate, votename, voteId, userSeq, onVoteDelete, duplicated }) => {
+const VoteListItem = ({ startDate, endDate, votename, voteId, userSeq, voteState, onVoteDelete, duplicated }) => {
   const nav = useNavigate();
   const { userInfo } = useVoteStore();
 
@@ -51,16 +51,23 @@ const VoteListItem = ({ startDate, endDate, votename, voteId, userSeq, onVoteDel
 
 
   return (
-    <div className={`mr-5 ml-5 mb-5 mt-5 bg-gray-200 pt-4 text-center rounded-md w-40 flex flex-col justify-between h-full`} path="/voteDetail" onClick={onClickNavigateHandler}>
-      <div className="mb-2 flex items-center justify-center">
+    <div
+      className={`mr-5 ml-5 mb-5 mt-5 pt-4 text-center rounded-md w-40 flex flex-col justify-between h-full ${voteState === 'END' ? 'bg-gray-300 opacity-50 cursor-not-allowed' : 'bg-gray-200'} `}
+      path="/voteDetail"
+      onClick={voteState !== 'END' ? onClickNavigateHandler : null}
+    >
+      <div className='flex items-center justify-center'>
+        <span className='font-bold' >{voteState === 'END' ? '종료' : '진행중'}</span>
+
+      </div>
+      <div className="flex items-center justify-center">
         <span className='font-bold mr-1 ml-1'>{`${startDataFormat} ~ ${endDataFormat}`}</span>
         {duplicated && (
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-blue-500">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-            </svg>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
         )}
       </div>
-      
       <div className="mb-2 max-w-xs break-words"><span className='font-sans'>{votename}</span></div>
       <div className="mt-auto">
         {userInfo.userSeq === userSeq && (
@@ -70,7 +77,7 @@ const VoteListItem = ({ startDate, endDate, votename, voteId, userSeq, onVoteDel
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 
