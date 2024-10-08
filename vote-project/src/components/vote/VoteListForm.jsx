@@ -84,7 +84,7 @@ const VoteListForm = () => {
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <>
+    <div className="mb-20">
       <div className="flex justify-end">
         {
           userInfo.gubun === 'guest' &&
@@ -109,11 +109,13 @@ const VoteListForm = () => {
             })
           }
         </div>
-        <div className="mx-auto px-6 py-5">
+      </div>
+      <div className="fixed bottom-2 left-0 right-0 flex justify-center items-center">
+        <div className="px-6 py-5">
           <button className='bg-blue-400 h-10 w-40 rounded-md text-white' path="/voteRegist" onClick={onClickNavigateHandler}>추가</button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

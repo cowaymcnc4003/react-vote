@@ -227,7 +227,7 @@ const VoteRegistForm = () => {
               <div className='gap-2 ml-5 flex-row1 font-sans'>
                 <div className=''>
                   <span >시작 날짜</span>
-                  <input value={startDate} onChange={(e) => setStartDate(e.target.value)} type="date" />
+                  <input value={startDate} onChange={(e) => setStartDate(e.target.value)} type="date" disabled />
                 </div>
                 <div className=''>
                   <span>종료 날짜</span>

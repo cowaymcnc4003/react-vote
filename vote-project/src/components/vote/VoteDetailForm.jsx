@@ -89,7 +89,7 @@ const VoteDetailForm = () => {
                         <div className="h-32">
                           <img src={match} alt="description" className="w-full h-full object-cover" />
                         </div>
-                        <div>득표 : {maxVoteCount}</div>
+                        <div>(동득표 : {maxVoteCount})</div>
                       </div>
                     )
                   }
