@@ -7,16 +7,16 @@ import VoteListItem from "./VoteListItem";
 
 const VoteListForm = () => {
   const nav = useNavigate();
-  const { userInfo, selectedDate, setSelectedDate } = useVoteStore();
+  const { userInfo, selectedDate, setSelectedDate, selectedVoteState, setSelectedVoteState } = useVoteStore();
   const inpVoteTitleSearch = useRef("");
   // const [seleteDate, setSeleteDate] = useState(new Date(selectedDate));
   const [seleteDate, setSeleteDate] = useState(new Date());
   const [voteData, setVoteData] = useState([]);
-  const [reload, setReload] = useState(false);
-  const [voteStateOption, setVoteStateOption] = useState('ALL'); // 기본값 설정
+  const [voteStateOption, setVoteStateOption] = useState(selectedVoteState); // 기본값 설정
 
   const onClickVoteState = (voteState) => {
     setVoteStateOption(voteState);
+    setSelectedVoteState(voteState);
     // refetch();
   };
   const voteOptionChange = (event) => {
@@ -43,7 +43,6 @@ const VoteListForm = () => {
     nav(-1);
   };
   const handleDeleteVote = () => { // 투표 항목 삭제 트리거
-    setReload(!reload);
     refetch();
   };
 
@@ -53,13 +52,13 @@ const VoteListForm = () => {
     "startDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth(), 1).getTime(), // 현재 월의 첫 날
     "endDate": new Date(seleteDate.getFullYear(), seleteDate.getMonth() + 1, 0, 23, 59, 59).getTime(),
     voteStateOption,
-    "reload": reload
   },
     { enabled: false }
   );
 
   useEffect(() => {
     refetch();  // voteStateOption이 바뀔 때 쿼리 실행
+    voteStateOption
   }, [voteStateOption]);
 
   const onChangeTitleSearch = (inpValue) => {

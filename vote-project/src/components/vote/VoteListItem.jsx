@@ -52,9 +52,11 @@ const VoteListItem = ({ startDate, endDate, votename, voteId, userSeq, voteState
 
   return (
     <div
-      className={`mr-5 ml-5 mb-5 mt-5 pt-4 text-center rounded-md w-40 flex flex-col justify-between h-full ${voteState === 'END' ? 'bg-gray-300 opacity-50 cursor-not-allowed' : 'bg-gray-200'} `}
+      // className={`mr-5 ml-5 mb-5 mt-5 pt-4 text-center rounded-md w-40 flex flex-col justify-between h-full ${voteState === 'END' ? 'bg-gray-300 opacity-50 cursor-not-allowed' : 'bg-gray-200'} `}
+      className='mr-5 ml-5 mb-5 mt-5 pt-4 text-center rounded-md w-40 flex flex-col justify-between h-full bg-gray-200'
       path="/voteDetail"
-      onClick={voteState !== 'END' ? onClickNavigateHandler : null}
+      // onClick={voteState !== 'END' ? onClickNavigateHandler : null}
+      onClick={onClickNavigateHandler}
     >
       <div className='flex items-center justify-center'>
         <span className='font-bold' >{voteState === 'END' ? '종료' : '진행중'}</span>

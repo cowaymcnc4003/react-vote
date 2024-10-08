@@ -2,12 +2,16 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useFetchRunoffVoting, useFetchVote, useFetchVoteClose, useFetchVoting } from "../../queries/voteQuery";
 import { useEffect, useState } from "react";
 import { useVoteStore } from "../../store/voteStore";
+import tapStar from '../../assets/img/tapStar.png';
+import match from '../../assets/img/match.png';
 
 const VoteDetailForm = () => {
   const { voteId } = useParams();
   const { userInfo } = useVoteStore();
+  const [voteItemArr, setVoteItemArr] = useState([]);
   const [voteCheckedItems, setVoteCheckedItems] = useState([]);
   const [voteMode, setVoteMode] = useState(false); // voteMode false 등록 true 수정
+  const [isClosed, setIsClosed] = useState(false);
   const [runoffVotingItem, setRunoffVotingItem] = useState({
     voteTitle: "",
     voteItem:
@@ -26,18 +30,26 @@ const VoteDetailForm = () => {
 
   useEffect(() => {
     if (res?.[0]) {
-      setVoteMode(res[0].duplicated);
+      const isClosed = res[0].isClosed;
+      setIsClosed(isClosed);
+      setVoteMode(res[0].duplicated || isClosed ? true : false);
       const initialCheckedItems = res[0].voteItems
         .filter(item => item.isVoted)
-        .map(item => ({ voteItemSeq: item.voteItemSeq }));
+        .map(item => (item));
       setVoteCheckedItems(initialCheckedItems);
-
 
       // 결선 투표 arr 얻기
       const maxVoteCount = Math.max(...res[0].voteItems.map(item => item.voteCount));
       const runoffVotingArr = res[0].voteItems.filter((item) => {
         return item.voteCount === maxVoteCount;
       });
+
+      if (isClosed) {
+        setVoteItemArr(runoffVotingArr);
+      } else {
+        setVoteItemArr(res[0].voteItems);
+      }
+
       setRunoffVotingItem({
         voteTitle: res[0].votename.split("(결선 투표)")[0] + "(결선 투표)",
         voteItem: runoffVotingArr
@@ -64,30 +76,63 @@ const VoteDetailForm = () => {
       const isTopVote = item.voteCount === maxVoteCount;
       const isChecked = voteCheckedItems.some(checkedItem => checkedItem.voteItemSeq === item.voteItemSeq);
 
-      return (
-        <div onClick={() => voteItemCheckClick(item.voteItemSeq, !isChecked)} key={idx} className={`w-[310px] md:w-[400px] mr-4 ml-4 py-2 break-words ${res[0].duplicated && isTopVote && item.voteCount > 0 ? 'border-2 border-yellow-500' : 'bg-gray-300'}`} >
-          {!voteMode ? (
-            <>
-              <input
-                className="ml-5"
-                type="checkbox"
-                checked={isChecked}
-                onChange={(e) => voteItemCheckClick(item.voteItemSeq, e.target.checked)}
-              />
-              <span className="ml-5 font-sans">{item.voteName}</span>
-            </>
-          ) : (
-            <>
-              <span className="ml-5 font-sans">{item.voteName}</span>
-              <span>({item.voteCount}표)</span>
-              {isTopVote && <span className="ml-2">🌠</span>}
-            </>
-          )}
-        </div>
-      );
-    });
-  };
+      if (isClosed) {
 
+        return (
+          <div key={idx}>
+            {
+              items.length > 1 ?
+                (<div className="flex flex-col items-center" key={idx} >
+                  {idx === 0 &&
+                    (
+                      <div className="flex flex-col items-center pb-3">
+                        <div className="h-32">
+                          <img src={match} alt="description" className="w-full h-full object-cover" />
+                        </div>
+                        <div>득표 : {maxVoteCount}</div>
+                      </div>
+                    )
+                  }
+                  <div>
+                    <span>{item.voteName}</span>
+                  </div>
+                </div>)
+                :
+                (<div className="flex flex-col items-center" key={idx} >
+                  <div className="h-32 pb-4">
+                    <img src={tapStar} alt="description" className="w-full h-full object-cover" />
+                  </div>
+                  <span>{item.voteName}({item.voteCount}표)</span>
+                </div>)
+            }
+          </div >
+        )
+      } else {
+        return (
+          <div onClick={() => voteItemCheckClick(item.voteItemSeq, !isChecked)} key={idx} className={`w-[310px] md:w-[400px] mr-4 ml-4 py-2 break-words ${res[0].duplicated && isTopVote && item.voteCount > 0 ? 'border-2 border-yellow-500' : 'bg-gray-300'}`} >
+            {!voteMode ? (
+              <>
+                <input
+                  className="ml-5"
+                  type="checkbox"
+                  checked={isChecked}
+                  onChange={(e) => voteItemCheckClick(item.voteItemSeq, e.target.checked)}
+                />
+                <span className="ml-5 font-sans">{item.voteName}</span>
+              </>
+            ) : (
+              <>
+                <span className="ml-5 font-sans">{item.voteName}</span>
+                <span>({item.voteCount}표)</span>
+                {isTopVote && <span className="ml-2">🌠</span>}
+              </>
+            )}
+          </div>
+        );
+      }
+    }
+    );
+  };
   const onClickVoting = () => {
     const voteData = {
       voteId,
@@ -133,7 +178,7 @@ const VoteDetailForm = () => {
       }, {
         onSuccess: async (data) => {
           console.log("투표 종료 성공:", data);
-          // await refetch();
+          await refetch();
           // setVoteMode(true);
         },
         onError: (error) => {
@@ -181,9 +226,10 @@ const VoteDetailForm = () => {
           <div className="pt-3 px-5">
             <div>작성자 : {res[0].username}</div>
             <div>투표기간 : {`${startDataFormat} ~ ${endDataFormat}`}</div>
+            <div>상태 : {isClosed ? '종료' : '진행중'}</div>
           </div>
-          <div className="bg-gray-200 gap-4 mx-auto py-4 flex flex-1 flex-col items-center overflow-y-auto max-h-[550px]">
-            {voteItemList(res[0].voteItems)}
+          <div className="bg-gray-200 gap-2 mx-auto py-4 flex flex-1 flex-col items-center overflow-y-auto max-h-[550px]">
+            {voteItemList(voteItemArr)}
           </div>
           {votingError && <div className="text-red-500 mt-2">투표 중 오류 발생: {votingError.message}</div>}
         </div>
@@ -191,19 +237,20 @@ const VoteDetailForm = () => {
       <div className="fixed flex bottom-2.5">
         {isVoting ? (
           "로딩 중..."
-        ) : (
+        ) : !isClosed ? (
           <div className="">
             <button
               className="bg-blue-400 h-10 w-20 rounded-md text-white"
               onClick={voteMode ? onClickUpDateMode : onClickVoting}
               disabled={isVoting}
             >
-              {voteMode ? "수정" : "등록"}
+              {voteMode ? "투표수정" : "투표등록"}
             </button>
 
           </div>
-        )}
-        {(res[0].userSeq === userInfo.userSeq && voteMode && runoffVotingItem.voteItem.length > 1) &&
+        ) : null}
+        {
+          (res[0].userSeq === userInfo.userSeq && voteMode && runoffVotingItem.voteItem.length > 1) &&
           <div className="">
             {/* <button
             className="bg-orange-400 h-10 w-40 rounded-md text-white"
@@ -221,7 +268,7 @@ const VoteDetailForm = () => {
             </button>
           </div>
         }
-        {(res[0].userSeq === userInfo.userSeq && voteMode && runoffVotingItem.voteItem.length > 1) &&
+        {(res[0].userSeq === userInfo.userSeq && voteMode && !isClosed) &&
           <div className="">
             {/* <button
             className="bg-orange-400 h-10 w-40 rounded-md text-white"
