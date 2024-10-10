@@ -31,6 +31,9 @@ const VoteDetailForm = () => {
   useEffect(() => {
     if (res?.[0]) {
       const isClosed = res[0].isClosed;
+      if (res[0].voteState === 'END') {
+        isClosed = true;
+      }
       setIsClosed(isClosed);
       setVoteMode(res[0].duplicated || isClosed ? true : false);
       const initialCheckedItems = res[0].voteItems

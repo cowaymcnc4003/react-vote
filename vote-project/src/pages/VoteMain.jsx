@@ -46,7 +46,7 @@ const VoteMain = () => {
   return (
     <>
       <VoteHeader
-        title={"투표 메인"}
+        title={"투표 리스트"}
         leftChild={
           <button
             className="bg-gray-400 px-4 py-2 mx-auto rounded text-3xl"
