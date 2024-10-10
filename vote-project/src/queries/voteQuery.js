@@ -4,12 +4,18 @@ import { registVote } from "../apis/auth";
 
 // 투표 기간 리스트
 export const useFetchVotes = (voteData, options = {}) => {
-  const { enabled = true } = options;  // enabled 값을 기본 true로 설정, 외부에서 제어 가능
+  const {
+    enabled = true,
+    staleTime = 0,  // 기본 staleTime
+    gcTime = 0,   // 기본 cacheTime
+  } = options;  // 옵션 값을 기본값으로 설정
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['/votes', voteData], // 객체 형태로 queryKey 전달
     queryFn: () => getVotes(voteData), // queryFn에 함수 전달
     suspense: false, // Suspense 활성화
     enabled, // enabled 옵션 추가
+    staleTime, // staleTime 추가
+    gcTime, // cacheTime 추가
   });
   const { data: res } = data || {};
 

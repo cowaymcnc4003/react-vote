@@ -65,7 +65,11 @@ const VoteListForm = () => {
     votePage: votePage,
     voteItemsPerPage: voteItemsPerPage.current
   },
-    { enabled: true }  // enabled를 true로 설정
+    {
+      enabled: false,
+      staleTime: 0, // 데이터가 항상 신선하다고 간주, 즉시 새 데이터 요청
+      gcTime: 0, // 캐시를 저장하지 않음
+    }
   );
 
   useEffect(() => {
@@ -88,6 +92,7 @@ const VoteListForm = () => {
   }, [isError, error]);
   // 상태 업데이트를 useEffect를 사용하여 처리
   useEffect(() => {
+    console.log(JSON.stringify(res));
     if (res?.voteData) {
       setVoteData((prevItems) => [...prevItems, ...res.voteData]); // 새 데이터 추가
     }
