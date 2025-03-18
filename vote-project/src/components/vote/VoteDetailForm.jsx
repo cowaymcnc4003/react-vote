@@ -30,7 +30,7 @@ const VoteDetailForm = () => {
 
   useEffect(() => {
     if (res?.[0]) {
-      const isClosed = res[0].isClosed;
+      let isClosed = res[0].isClosed;
       if (res[0].voteState === 'END') {
         isClosed = true;
       }
