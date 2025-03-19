@@ -8,5 +8,5 @@ jobs:
         working-directory: vote-project
     steps:
       - uses: actions/checkout@v3
-      - run: npm i
+      - run: npm ci
       - run: npm run build
