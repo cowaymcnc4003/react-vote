@@ -10,4 +10,4 @@ jobs:
             path: ~/.npm
             key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         - run: npm ci
-          working-directory: vote-project  # 🔹 실행 폴더를 지정
+          working-directory: vote-project  # 🔹 실행 폴더를 지정2
