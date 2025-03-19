@@ -7,10 +7,6 @@ jobs:
       run:
         working-directory: vote-project
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-      - run: npm install @rollup/rollup-linux-x64-gnu
       - uses: actions/checkout@v3
       - run: npm i
       - run: npm run build
