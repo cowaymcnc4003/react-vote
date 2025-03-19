@@ -4,6 +4,9 @@ jobs:
   cache:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: npm ci 
-      - working-directory: vote-project  # 🔹 실행 폴더를 지정
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: vote-project  # 🔹 실행 폴더를 지정
