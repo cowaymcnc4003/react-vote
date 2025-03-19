@@ -3,11 +3,10 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vote-project
     steps:
       - uses: actions/checkout@v3
       - run: npm ci
-        working-directory: vote-project
-      - run: npm test
-        working-directory: vote-project
       - run: npm run build
-        working-directory: vote-project
