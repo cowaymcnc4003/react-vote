@@ -1,5 +1,5 @@
 name: Our Steps
-on: puch
+on: push
   jobs:
     foobar:
       runs-on: ubuntu-latest
