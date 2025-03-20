@@ -1,6 +1,6 @@
 name: Our Steps
 on: push
-  jobs:
+jobs:
     foobar:
       runs-on: ubuntu-latest
       steps:
