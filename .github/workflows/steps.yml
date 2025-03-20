@@ -1,0 +1,9 @@
+name: Our Steps
+on: puch
+  jobs:
+    foobar:
+      runs-on: ubuntu-latest
+      steps:
+        - id: set-foo
+        - run: echo "foo=bar" >> $GITHUB_OUTPUT
+        - run: echo ${{ steps.set-foo.outputs.foo }}
