@@ -27,3 +27,10 @@ jobs:
           run: echo zero
         - if: steps.gen-num.outputs.num == 1
           run: echo one
+    ignore:
+      runs-on: ubuntu-latest
+      steps:
+        - id: flaky
+          continue-on-error: true
+          run: exit 1
+        - run: echo "I don't care"
