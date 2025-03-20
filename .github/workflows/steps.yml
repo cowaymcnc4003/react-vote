@@ -8,14 +8,14 @@ jobs:
           run: echo "foo=bar" >> $GITHUB_OUTPUT
         - run: echo ${{ steps.set-foo.outputs.foo }}
     calculate:
-        runs-on: ubuntu-lastest
-        steps:
-            - id : gen-num1
-              run: echo "num=$(($RANDOM % 10 + 1))" >> $GITHUB_OUTPUT
-            - id : gen-num2
-              run: echo "num=$(($RANDOM % 10 + 1))" >> $GITHUB_OUTPUT
-            - run: echo $((${{ steps.gen-num1.outputs.num }} + ${{ steps.gen-num1.outputs.num }}))
-            - run: echo $((${{ steps.gen-num1.outputs.num }} - ${{ steps.gen-num1.outputs.num }}))
-            - run: echo $((${{ steps.gen-num1.outputs.num }} * ${{ steps.gen-num1.outputs.num }}))
-            - run: echo $((${{ steps.gen-num1.outputs.num }} / ${{ steps.gen-num1.outputs.num }}))
+      runs-on: ubuntu-lastest
+      steps:
+        - id : gen-num1
+          run: echo "num=$(($RANDOM % 10 + 1))" >> $GITHUB_OUTPUT
+        - id : gen-num2
+          run: echo "num=$(($RANDOM % 10 + 1))" >> $GITHUB_OUTPUT
+        - run: echo $((${{ steps.gen-num1.outputs.num }} + ${{ steps.gen-num1.outputs.num }}))
+        - run: echo $((${{ steps.gen-num1.outputs.num }} - ${{ steps.gen-num1.outputs.num }}))
+        - run: echo $((${{ steps.gen-num1.outputs.num }} * ${{ steps.gen-num1.outputs.num }}))
+        - run: echo $((${{ steps.gen-num1.outputs.num }} / ${{ steps.gen-num1.outputs.num }}))
                 
