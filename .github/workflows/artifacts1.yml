@@ -13,4 +13,4 @@ jobs:
       - uses: actions/upload-artifact@v4.6.2
         with:
           name: dist
-          path: vote-project/dist
+          path: vote-project/dist/**
