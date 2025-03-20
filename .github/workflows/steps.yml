@@ -8,7 +8,7 @@ jobs:
           run: echo "foo=bar" >> $GITHUB_OUTPUT
         - run: echo ${{ steps.set-foo.outputs.foo }}
     calculate:
-      runs-on: ubuntu-lastest
+      runs-on: ubuntu-latest
       steps:
         - id : gen-num1
           run: echo "num=$(($RANDOM % 10 + 1))" >> $GITHUB_OUTPUT
