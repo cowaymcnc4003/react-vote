@@ -6,4 +6,4 @@ jobs:
       steps:
         - id: set-foo
         - run: echo "foo=bar" >> $GITHUB_OUTPUT
-        - run: echo ${{ steps.set-foo.outputs.foo }}
+        - run: echo ${{ steps.set-foo.outputs.foo }} 
