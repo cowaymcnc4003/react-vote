@@ -12,5 +12,5 @@ jobs:
       - run: npm run build
       - uses: actions/upload-artifact@v4.6.2
         with:
-          name: build
+          name: dist
           path: vote-project/dist
