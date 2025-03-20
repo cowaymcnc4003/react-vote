@@ -18,4 +18,12 @@ jobs:
         - run: echo $((${{ steps.gen-num1.outputs.num }} - ${{ steps.gen-num1.outputs.num }}))
         - run: echo $((${{ steps.gen-num1.outputs.num }} * ${{ steps.gen-num1.outputs.num }}))
         - run: echo $((${{ steps.gen-num1.outputs.num }} / ${{ steps.gen-num1.outputs.num }}))
-                
+    zeroone:
+      runs-on: ubuntu-latest
+      steps:
+        - id: gen-num
+          run: echo "num=$(($RANDOM % 2))" >> $GITHUB_OUTPUT
+        - if: steps.gen-num.outputs.num == 0
+          run: echo zero
+        - if: steps.gen-num.outputs.num == 1
+          run: echo one
