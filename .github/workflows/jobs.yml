@@ -6,10 +6,12 @@ jobs:
     steps:
       - run: echo ${{ github.job }}
   job2:
+    needs: job1
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ github.job }}
   job3:
+    needs: [job1, job2]
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{ github.job }}
