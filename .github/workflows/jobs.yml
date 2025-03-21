@@ -5,9 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - id: step1
-        run: echo "word=GitHub" >> $GITHUN_OUTPUT
+        run: echo "word=GitHub" >> $GITHUB_OUTPUT
       - id: step2
-        run: echo "word=Actions" >> $GITHUN_OUTPUT
+        run: echo "word=Actions" >> $GITHUB_OUTPUT
     outputs:
      word1: ${{ steps.step1.outputs.word }}
      word2: ${{ steps.step2.outputs.word }}
