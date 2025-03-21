@@ -4,11 +4,11 @@ jobs:
   date1:
     runs-on: ubuntu-latest
     steps:
-      - run : echo 'Hello!'
+      - run : date
   date2:
     runs-on: window-latest
     steps:
-      - run: echo 'Hello, Main'
+      - run: date'
   date3:
     runs-on: macos-latest
     steps:
