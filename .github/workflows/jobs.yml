@@ -4,14 +4,16 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.job }}
+      - id: step1
+        run: echo "word=GitHub" >> $GITHUN_OUTPUT
+      - id: step2
+        run: echo "word=Actions" >> $GITHUN_OUTPUT
+    outputs:
+     word1: ${{ steps.step1.outputs.word }}
+     word2: ${{ steps.step2.outputs.word }}
   job2:
     needs: job1
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.job }}
-  job3:
-    needs: [job1, job2]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo ${{ github.job }}
+      - run: echo ${{ needs.job1.outputs.word1 }}
+      - run: echo ${{ needs.job1.outputs.word2 }}
