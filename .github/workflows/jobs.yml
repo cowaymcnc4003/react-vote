@@ -6,7 +6,7 @@ jobs:
     steps:
       - run : date
   date2:
-    runs-on: window-latest
+    runs-on: windows-latest
     steps:
       - run: date'
   date3:
