@@ -1,17 +1,15 @@
 name: Our Jobs
 on: push
 jobs:
-  echo:
+  date1:
     runs-on: ubuntu-latest
     steps:
       - run : echo 'Hello!'
-  echo_if:
-    if: github.ref_name == 'main' 
-    runs-on: ubuntu-latest
+  date2:
+    runs-on: window-latest
     steps:
       - run: echo 'Hello, Main'
-  skip_ci:
-    runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'skip ci')
+  date3:
+    runs-on: macos-latest
     steps:
-      - run: echo 'Hello, Skip CI!'
+      - run: date
