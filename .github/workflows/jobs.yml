@@ -1,11 +1,8 @@
 name: Our Jobs
 on: push
 jobs:
-  hello1:
+  hello:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Hello, GitHub Actions!" > Hello.txt
-  hello2:
-    runs-on: ubuntu-latest
-    steps:
       - run: cat hello.txt
