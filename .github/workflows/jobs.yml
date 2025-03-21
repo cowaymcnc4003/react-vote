@@ -6,10 +6,10 @@ jobs:
     steps:
       - run : echo 'Hello!'
   echo_if:
-    if: github.ref_name == 'feature' 
+    if: github.ref_name == 'main' 
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'Hello, Feature1'
+      - run: echo 'Hello, Main'
   skip_ci:
     runs-on: ubuntu-latest
     if: contains(github.event.head_commit.message, 'skip ci')
