@@ -8,7 +8,7 @@ jobs:
   date2:
     runs-on: windows-latest
     steps:
-      - run: date'
+      - run: date
   date3:
     runs-on: macos-latest
     steps:
