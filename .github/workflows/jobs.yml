@@ -6,7 +6,7 @@ jobs:
     steps:
       - run : echo 'Hello!'
   echo_if:
-    if: github.ref_name == 'feature'
+    if: github.ref_name == 'feature' 
     runs-on: ubuntu-latest
     steps:
       - run: echo 'Hello, Feature1'
