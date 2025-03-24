@@ -1,15 +1,13 @@
 name: Our Jobs
 on: push
 jobs:
-  date1:
-    runs-on: ubuntu-latest
+  date:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
     steps:
-      - run : date
-  date2:
-    runs-on: windows-latest
-    steps:
-      - run: date
-  date3:
-    runs-on: macos-latest
-    steps:
-      - run: date
+        - run: date
