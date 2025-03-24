@@ -8,4 +8,4 @@ jobs:
             echo "## 할일 목록" >> $GITHUB_STEP_SUMMARY
             echo "- 자기" >> $GITHUB_STEP_SUMMARY
             echo "- 놀기" >> $GITHUB_STEP_SUMMARY
-            echp "- 먹기" >> $GITHUB_STEP_SUMMARY
+            echo "- 먹기" >> $GITHUB_STEP_SUMMARY
