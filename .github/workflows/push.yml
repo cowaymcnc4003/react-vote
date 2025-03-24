@@ -3,7 +3,7 @@ on:
   push:
 jobs:
   echo:
-    runs-on: unbuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - run: echo "ref_name=${{ github.ref_name }}"
       - run: echo "sha=${{ github.sha }}"
