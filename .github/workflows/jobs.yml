@@ -1,13 +1,11 @@
 name: Our Jobs
 on: push
 jobs:
-  date:
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - windows-latest
-          - macos-latest
-    runs-on: ${{ matrix.os }}
+  todos:
+    runs-on: ubuntu-latest
     steps:
-        - run: date
+        - run: |
+            echo "## 할일 목록" >> $GITHUB_STEP_SUMMARY
+            echo "- 자기" >> $GITHUB_STEP_SUMMARY
+            echo "- 놀기" >> $GITHUB_STEP_SUMMARY
+            echp "- 먹기" >> $GITHUB_STEP_SUMMARY
