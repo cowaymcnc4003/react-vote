@@ -1,0 +1,12 @@
+name: Our Ic
+on:
+  issue_comment:
+    types: [created, edited]
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "name=${{ github.event_name }}"
+      - run: echo "action=${{ github.event_action }}"
+      - run: echo "issue_number=${{ github.event.issue.number }}"
+      - run: echo "coment_body=${{ github.event.comment.body }}"
