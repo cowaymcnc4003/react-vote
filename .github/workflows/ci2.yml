@@ -1,16 +1,16 @@
-name: CI
-on:
-  push: 
-    branches: [main]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm ci
-      - run: npm run build
-      - uses : action/configure-pages@v5
-      - uses: actions/upload
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+# name: CI
+# on:
+#   push: 
+#     branches: [main]
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - run: npm ci
+#       - run: npm run build
+#       - uses : action/configure-pages@v5
+#       - uses: actions/upload
+#   deploy:
+#     needs: build
+#     runs-on: ubuntu-latest
